@@ -15,10 +15,9 @@ from ConfigSpace.hyperparameters import CategoricalHyperparameter, \
     UniformFloatHyperparameter, UniformIntegerHyperparameter
 
 # SMAC3
-from smac.tae.execute_func import ExecuteTAFuncDict
-from smac.scenario.scenario import Scenario
-from smac.stats.stats import Stats as AC_Stats
-from smac.facade.smac_hpo_facade import SMAC4HPO as SMAC
+from smac.scenario import Scenario
+# from smac.stats.stats import Stats as AC_Stats
+from smac import AlgorithmConfigurationFacade
 
 from autofolio.io.cmd import CMDParser
 from aslib_scenario.aslib_scenario import ASlibScenario
@@ -56,8 +55,8 @@ __version__ = "2.2.0"
 
 class AutoFolio(object):
 
-    def __init__(self, random_seed: int=12345):
-        ''' Constructor 
+    def __init__(self, random_seed: int = 12345):
+        ''' Constructor
 
             Arguments
             ---------
@@ -111,11 +110,11 @@ class AutoFolio(object):
             if args_.performance_test_csv and args_.feature_test_csv:
                 test_scenario = ASlibScenario()
                 test_scenario.read_from_csv(perf_fn=args_.performance_test_csv,
-                                       feat_fn=args_.feature_test_csv,
-                                       objective=args_.objective,
-                                       runtime_cutoff=args_.runtime_cutoff,
-                                       maximize=args_.maximize,
-                                       cv_fn=None)
+                                            feat_fn=args_.feature_test_csv,
+                                            objective=args_.objective,
+                                            runtime_cutoff=args_.runtime_cutoff,
+                                            maximize=args_.maximize,
+                                            cv_fn=None)
 
             config = {}
             if args_.config is not None:
@@ -131,10 +130,10 @@ class AutoFolio(object):
             self.cs = self.get_cs(scenario, config)
 
             if args_.outer_cv:
-                self._outer_cv(scenario, config, args_.outer_cv_fold, 
-                    args_.out_template, smac_seed=args_.smac_seed)
+                self._outer_cv(scenario, config, args_.outer_cv_fold,
+                               args_.out_template, smac_seed=args_.smac_seed)
                 return 0
-            
+
             if args_.tune:
                 config = self.get_tuned_config(scenario,
                                                wallclock_limit=args_.wallclock_limit,
@@ -160,9 +159,9 @@ class AutoFolio(object):
                                       scenario=scenario,
                                       test_scenario=test_scenario)
 
-    def _outer_cv(self, scenario: ASlibScenario, autofolio_config:dict=None, 
-            outer_cv_fold:int=None, out_template:str=None,
-            smac_seed:int=42):
+    def _outer_cv(self, scenario: ASlibScenario, autofolio_config: dict = None,
+                  outer_cv_fold: int = None, out_template: str = None,
+                  smac_seed: int = 42):
         '''
             Evaluate on a scenario using an "outer" cross-fold validation
             scheme. In particular, this ensures that SMAC does not use the test
@@ -172,7 +171,7 @@ class AutoFolio(object):
             ---------
             scenario: ASlibScenario
                 ASlib Scenario at hand
-            
+
             autofolio_config: dict, or None
                 An optional dictionary of configuration options
 
@@ -180,11 +179,11 @@ class AutoFolio(object):
                 If given, then only the single outer-cv fold is processed
 
             out_template: str, or None
-                If given, the learned configurations are written to the 
+                If given, the learned configurations are written to the
                 specified locations. The string is considered a template, and
                 "%fold%" will be replaced with the fold.
 
-            smac_seed:int 
+            smac_seed:int
                 random seed for SMAC
 
             Returns
@@ -200,31 +199,31 @@ class AutoFolio(object):
         # For each outer split
         outer_cv_folds = range(1, 11)
         if outer_cv_fold is not None:
-            outer_cv_folds = range(outer_cv_fold, outer_cv_fold+1)
+            outer_cv_folds = range(outer_cv_fold, outer_cv_fold + 1)
 
         for cv_fold in outer_cv_folds:
-            
+
             # Use ‘ASlibScenario.get_split()’ to get the outer split
             outer_testing, outer_training = scenario.get_split(cv_fold)
-            
+
             msg = ">>>>> Outer CV fold: {} <<<<<".format(cv_fold)
             self.logger.info(msg)
 
             # Use ASlibScenario.create_cv_splits() to get an inner-cv
             outer_training.create_cv_splits(n_folds=10)
-            
+
             # Use ‘AutoFolio.get_tuned_config()’ to tune on inner-cv
             config = self.get_tuned_config(
-                outer_training, 
+                outer_training,
                 autofolio_config=autofolio_config,
                 seed=smac_seed
             )
-            
+
             # Use `AutoFolio.run_fold()’ to get the performance on the outer split
             stats, fit, schedule = self.run_fold(
-                config, 
-                scenario, 
-                cv_fold, 
+                config,
+                scenario,
+                cv_fold,
                 return_fit=True
             )
 
@@ -239,16 +238,16 @@ class AutoFolio(object):
             if out_template is not None:
                 out_template_ = string.Template(out_template)
                 model_fn = out_template_.substitute(fold=cv_fold, type="pkl")
-                
+
                 msg = "Writing model to: {}".format(model_fn)
                 self.logger.info(msg)
 
                 self._save_model(
-                    model_fn, 
-                    scenario, 
-                    feature_pre_pipeline, 
-                    pre_solver, 
-                    selector, 
+                    model_fn,
+                    scenario,
+                    feature_pre_pipeline,
+                    pre_solver,
+                    selector,
                     config
                 )
 
@@ -273,7 +272,8 @@ class AutoFolio(object):
         self.logger.info(">>>>> Final Stats <<<<<")
         outer_stats.show()
 
-    def _save_model(self, out_fn: str, scenario: ASlibScenario, feature_pre_pipeline: list, pre_solver: Aspeed, selector, config: Configuration):
+    def _save_model(self, out_fn: str, scenario: ASlibScenario, feature_pre_pipeline: list, pre_solver: Aspeed,
+                    selector, config: Configuration):
         '''
             save all pipeline objects for predictions
 
@@ -311,7 +311,7 @@ class AutoFolio(object):
             model_fn: str
                 file name of saved model
             feature_vec: list
-                instance feature vector as a list of floats 
+                instance feature vector as a list of floats
 
             Returns
             -------
@@ -338,7 +338,7 @@ class AutoFolio(object):
 
         return pred["pseudo_instance"]
 
-    def get_cs(self, scenario: ASlibScenario, autofolio_config:dict=None):
+    def get_cs(self, scenario: ASlibScenario, autofolio_config: dict = None):
         '''
             returns the parameter configuration space of AutoFolio
             (based on the automl config space: https://github.com/automl/ConfigSpace)
@@ -356,24 +356,22 @@ class AutoFolio(object):
 
         # only allow the feature groups specified in the config file
         # by default, though, all of the feature groups are allowed.
-        allowed_feature_groups = autofolio_config.get("allowed_feature_groups", 
-            scenario.feature_steps)
+        allowed_feature_groups = autofolio_config.get("allowed_feature_groups",
+                                                      scenario.feature_steps)
 
         if len(allowed_feature_groups) == 0:
             msg = "Please ensure at least one feature group is allowed"
             raise ValueError(msg)
 
-
-        if len(allowed_feature_groups) == 1: 
-            choices = [True] # if we only have one feature group, it has to be active 
+        if len(allowed_feature_groups) == 1:
+            choices = [True]  # if we only have one feature group, it has to be active
         else:
             choices = [True, False]
         default = True
 
         for fs in allowed_feature_groups:
-            
             fs_param = CategoricalHyperparameter(name="fgroup_%s" % (fs),
-                choices=choices, default_value=default)
+                                                 choices=choices, default_value=default)
             self.cs.add_hyperparameter(fs_param)
 
         # preprocessing
@@ -397,11 +395,11 @@ class AutoFolio(object):
             cls_choices = [autofolio_config["classifier"]]
             cls_def = autofolio_config["classifier"]
         else:
-            cls_choices = ["RandomForest","XGBoost"]
+            cls_choices = ["RandomForest", "XGBoost"]
             cls_def = "RandomForest"
         classifier = CategoricalHyperparameter(
-                "classifier", choices=cls_choices, 
-                default_value=cls_def)
+            "classifier", choices=cls_choices,
+            default_value=cls_def)
 
         self.cs.add_hyperparameter(classifier)
 
@@ -417,7 +415,7 @@ class AutoFolio(object):
             reg_def = "RandomForestRegressor"
 
         regressor = CategoricalHyperparameter(
-                "regressor", choices=reg_choices, default_value=reg_def)
+            "regressor", choices=reg_choices, default_value=reg_def)
         self.cs.add_hyperparameter(regressor)
         RandomForestRegressor.add_params(self.cs)
 
@@ -427,24 +425,62 @@ class AutoFolio(object):
             sel_choices = [autofolio_config["selector"]]
             sel_def = autofolio_config["selector"]
         else:
-            sel_choices = ["PairwiseClassifier","PairwiseRegressor"]
+            sel_choices = ["PairwiseClassifier", "PairwiseRegressor"]
             sel_def = "PairwiseClassifier"
-            
+
         selector = CategoricalHyperparameter(
-                "selector", choices=sel_choices, default_value=sel_def)
+            "selector", choices=sel_choices, default_value=sel_def)
         self.cs.add_hyperparameter(selector)
         PairwiseClassifier.add_params(self.cs)
-        PairwiseRegression.add_params(self.cs)  
+        PairwiseRegression.add_params(self.cs)
 
         self.logger.debug(self.cs)
 
         return self.cs
 
-    def get_tuned_config(self, scenario: ASlibScenario, 
-                         runcount_limit:int=42,
-                         wallclock_limit:int=300,
-                         autofolio_config:dict=dict(),
-                         seed:int=42):
+    def called_by_smac(self, config: Configuration, scenario: ASlibScenario, instance: str = None, seed: int = 1):
+        '''
+            run a cross fold validation based on the given data from cv.arff
+
+            Arguments
+            ---------
+            config: Configuration
+                parameter configuration to use for preprocessing
+            scenario: aslib_scenario.aslib_scenario.ASlibScenario
+                aslib scenario at hand
+            instance: str
+                cv-fold index
+            seed: int
+                random seed (not used)
+
+            Returns
+            -------
+            float: average performance
+        '''
+
+        if instance is None:
+            perf = self.run_cv(config=config, scenario=scenario)
+        else:
+            try:
+                stats = self.run_fold(config=config, scenario=scenario, fold=int(instance))
+                perf = stats.show()
+            except ValueError:
+                if scenario.performance_type[0] == "runtime":
+                    perf = scenario.algorithm_cutoff_time * 20
+                else:
+                    # try to impute a worst case perf
+                    perf = scenario.performance_data.max().max()
+
+        if scenario.maximize[0]:
+            perf *= -1
+
+        return perf
+
+    def get_tuned_config(self, scenario: ASlibScenario,
+                         runcount_limit: int = 42,
+                         wallclock_limit: int = 300,
+                         autofolio_config: dict = dict(),
+                         seed: int = 42):
         '''
             uses SMAC3 to determine a well-performing configuration in the configuration space self.cs on the given scenario
 
@@ -471,21 +507,34 @@ class AutoFolio(object):
         wallclock_limit = autofolio_config.get("wallclock_limit", wallclock_limit)
         runcount_limit = autofolio_config.get("runcount_limit", runcount_limit)
 
-        taf = functools.partial(self.called_by_smac, scenario=scenario)
+        def taf(config: Configuration, instance: str = None, seed: int = 1) -> float:
+            return self.called_by_smac(scenario=scenario, config=config, instance=instance, seed=seed)
+
         max_fold = scenario.cv_data.max().max()
         max_fold = int(max_fold)
 
-        ac_scenario = Scenario({"run_obj": "quality",  # we optimize quality
-                                "runcount-limit": runcount_limit,
-                                "cs": self.cs,  # configuration space
-                                "deterministic": "true",
-                                "instances": [[str(i)] for i in range(1, max_fold+1)],
-                                "wallclock-limit": wallclock_limit,
-                                "output-dir" : "" if not autofolio_config.get("output-dir",None) else autofolio_config.get("output-dir") 
-                                })
+        ac_scenario = Scenario(configspace=self.cs,
+                               deterministic=True,
+                               instances=[str(i) for i in range(1, max_fold + 1)],
+                               walltime_limit=wallclock_limit,
+                               output_directory="" if not autofolio_config.get("output-dir",
+                                                                               None) else autofolio_config.get(
+                                   "output-dir"),
+                               n_trials=runcount_limit,
+                               seed=seed
+                               )
+
+        # ac_scenario = Scenario({"run_obj": "quality",  # we optimize quality
+        #                         "runcount-limit": runcount_limit,
+        #                         "cs": self.cs,  # configuration space
+        #                         "deterministic": "true",
+        #                         "instances": [[str(i)] for i in range(1, max_fold+1)],
+        #                         "wallclock-limit": wallclock_limit,
+        #                         "output-dir" :
+        #                         })
 
         # necessary to use stats options related to scenario information
-        AC_Stats.scenario = ac_scenario
+        # AC_Stats.scenario = ac_scenario
 
         # Optimize
         self.logger.info(
@@ -493,53 +542,17 @@ class AutoFolio(object):
         self.logger.info("Start Configuration")
         self.logger.info(
             ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-        smac = SMAC(scenario=ac_scenario, tae_runner=taf,
-                    rng=np.random.RandomState(seed))
+        # smac = SMAC(scenario=ac_scenario, tae_runner=taf,
+        #            rng=np.random.RandomState(seed))
+        smac = AlgorithmConfigurationFacade(scenario=ac_scenario, target_function=taf)
+
         incumbent = smac.optimize()
 
         self.logger.info("Final Incumbent: %s" % (incumbent))
 
         return incumbent
 
-    def called_by_smac(self, config: Configuration, scenario: ASlibScenario, instance:str=None, seed:int=1):
-        '''
-            run a cross fold validation based on the given data from cv.arff
-
-            Arguments
-            ---------
-            config: Configuration
-                parameter configuration to use for preprocessing
-            scenario: aslib_scenario.aslib_scenario.ASlibScenario
-                aslib scenario at hand
-            instance: str
-                cv-fold index 
-            seed: int
-                random seed (not used)
-                
-            Returns
-            -------
-            float: average performance
-        '''
-        
-        if instance is None:
-            perf = self.run_cv(config=config, scenario=scenario)
-        else:
-            try:
-                stats = self.run_fold(config=config, scenario=scenario, fold=int(instance))
-                perf = stats.show()
-            except ValueError:
-                if scenario.performance_type[0] == "runtime":
-                    perf = scenario.algorithm_cutoff_time * 20
-                else:
-                    # try to impute a worst case perf
-                    perf = scenario.performance_data.max().max()
-                
-        if scenario.maximize[0]:
-            perf *= -1
-        
-        return perf
-
-    def run_cv(self, config: Configuration, scenario: ASlibScenario, folds:int=10):
+    def run_cv(self, config: Configuration, scenario: ASlibScenario, folds: int = 10):
         '''
             run a cross fold validation based on the given data from cv.arff
 
@@ -554,7 +567,7 @@ class AutoFolio(object):
             seed: int
                 random seed (not used)
         '''
-        #TODO: use seed and instance in an appropriate way
+        # TODO: use seed and instance in an appropriate way
         try:
             if scenario.performance_type[0] == "runtime":
                 cv_stat = Stats(runtime_cutoff=scenario.algorithm_cutoff_time)
@@ -579,10 +592,11 @@ class AutoFolio(object):
 
         return par10
 
-    def run_fold(self, config: Configuration, scenario:ASlibScenario, fold:int, test_scenario=None, return_fit:bool=False):
+    def run_fold(self, config: Configuration, scenario: ASlibScenario, fold: int, test_scenario=None,
+                 return_fit: bool = False):
         '''
             run a given fold of cross validation
-            
+
             Arguments
             ---------
             scenario: aslib_scenario.aslib_scenario.ASlibScenario
@@ -598,7 +612,7 @@ class AutoFolio(object):
             return_fit: bool
                 optionally, the learned preprocessing options, presolver and
                 selector can be returned
-                
+
             Returns
             -------
             Stats()
@@ -610,8 +624,8 @@ class AutoFolio(object):
             schedule: dict of string -> list of (solver, cutoff) pairs
                 only present if return_fit is True
                 the solver choices for each instance
-                
-                
+
+
         '''
 
         if test_scenario is None:
@@ -635,8 +649,8 @@ class AutoFolio(object):
             stats = val.validate_quality(
                 schedules=schedules, test_scenario=test_scenario, train_scenario=training_scenario)
         else:
-            raise ValueError("Unknown: %s" %(scenario.performance_type[0]))
-        
+            raise ValueError("Unknown: %s" % (scenario.performance_type[0]))
+
         if return_fit:
             return stats, (feature_pre_pipeline, pre_solver, selector), schedules
         else:
@@ -753,7 +767,7 @@ class AutoFolio(object):
 
     def fit_pre_solving(self, scenario: ASlibScenario, config: Configuration):
         '''
-            fits an pre-solving schedule using Aspeed [Hoos et al, 2015 TPLP) 
+            fits an pre-solving schedule using Aspeed [Hoos et al, 2015 TPLP)
 
             Arguments
             ---------
@@ -809,15 +823,15 @@ class AutoFolio(object):
             reg_class = None
             if config.get("regressor") == "RandomForestRegressor":
                 reg_class = RandomForestRegressor
-                
+
             selector = IndRegression(regressor_class=reg_class)
             selector.fit(scenario=scenario, config=config)
-            
+
         if config.get("selector") == "JointRegressor":
             reg_class = None
             if config.get("regressor") == "RandomForestRegressor":
                 reg_class = RandomForestRegressor
-                
+
             selector = JointRegression(regressor_class=reg_class)
             selector.fit(scenario=scenario, config=config)
 
@@ -825,13 +839,14 @@ class AutoFolio(object):
             reg_class = None
             if config.get("regressor") == "RandomForestRegressor":
                 reg_class = RandomForestRegressor
-                
+
             selector = PairwiseRegression(regressor_class=reg_class)
             selector.fit(scenario=scenario, config=config)
 
         return selector
 
-    def predict(self, scenario: ASlibScenario, config: Configuration, feature_pre_pipeline: list, pre_solver: Aspeed, selector):
+    def predict(self, scenario: ASlibScenario, config: Configuration, feature_pre_pipeline: list, pre_solver: Aspeed,
+                selector):
         '''
             predicts algorithm schedules wrt a given config
             and given pipelines
@@ -863,7 +878,8 @@ class AutoFolio(object):
 
         # combine schedules
         if pre_solving_schedule:
-            return dict((inst, pre_solving_schedule.get(inst, []) + schedule) for inst, schedule in pred_schedules.items())
+            return dict(
+                (inst, pre_solving_schedule.get(inst, []) + schedule) for inst, schedule in pred_schedules.items())
         else:
             return pred_schedules
 
