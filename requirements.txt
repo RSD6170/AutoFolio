@@ -7,6 +7,5 @@ pandas
 xgboost
 ConfigSpace
 pyrfr
-smac>=0.11.1
-git+https://github.com/mlindauer/ASlibScenario
+smac
 
