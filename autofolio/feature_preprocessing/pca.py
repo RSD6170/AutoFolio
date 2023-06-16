@@ -26,14 +26,8 @@ class PCAWrapper(object):
         '''
         pca_switch = CategoricalHyperparameter(
             "pca", choices=[True, False], default_value=False)
-        n_instances = len(scenario.instances)
-        n_features = len(scenario.features)
-        n_comp_upper_default = 20
-        n_comp_upper = min(n_comp_upper_default, n_instances, n_features)
-        n_comp_value_default = 7
-        n_comp_value = min(n_comp_value_default, n_comp_upper)
         n_components = UniformIntegerHyperparameter(
-            "pca_n_components", lower=1, upper=n_comp_upper, default_value=n_comp_value, log=True)
+            "pca_n_components", lower=1, upper=20, default_value=7, log=True)
         cs.add_hyperparameter(pca_switch)
         cs.add_hyperparameter(n_components)
         cond = InCondition(
