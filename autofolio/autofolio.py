@@ -516,6 +516,7 @@ class AutoFolio(object):
         ac_scenario = Scenario(configspace=self.cs,
                                deterministic=True,
                                instances=[str(i) for i in range(1, max_fold + 1)],
+                               instance_features=dict([(str(i), [i]) for i in range(1, max_fold + 1)]),
                                walltime_limit=wallclock_limit,
                                output_directory="" if not autofolio_config.get("output-dir",
                                                                                None) else autofolio_config.get(
