@@ -1,4 +1,5 @@
 import logging
+import sys
 
 from aslib_scenario.aslib_scenario import ASlibScenario
 
@@ -9,7 +10,7 @@ __license__ = "BSD"
 class Stats(object):
 
     def __init__(self, runtime_cutoff):
-        ''' Constructor 
+        ''' Constructor
 
             Arguments
             ---------
@@ -26,12 +27,12 @@ class Stats(object):
         self.sbs = 0
 
         self.runtime_cutoff = runtime_cutoff
-        
+
         self.selection_freq = {}
 
         self.logger = logging.getLogger("Stats")
 
-    def show(self, remove_unsolvable: bool=True):
+    def show(self, remove_unsolvable: bool = True):
         '''
             shows statistics
 
@@ -39,19 +40,19 @@ class Stats(object):
             --------
             remove_unsolvable : bool
                 remove unsolvable from stats
-                
+
             Returns
             -------
             par10: int
-                penalized average runtime 
+                penalized average runtime
         '''
 
         if remove_unsolvable and self.runtime_cutoff:
             rm_string = "removed"
             self.logger.debug("Statistics before removing unsolvable instances")
-            self.logger.debug("PAR1: %.4f" %(self.par1 / (self.timeouts + self.solved)))
-            self.logger.debug("PAR10: %.4f" %(self.par10 / (self.timeouts + self.solved)))
-            self.logger.debug("Timeouts: %d / %d" %(self.timeouts, self.timeouts + self.solved))
+            self.logger.debug("PAR1: %.4f" % (self.par1 / (self.timeouts + self.solved)))
+            self.logger.debug("PAR10: %.4f" % (self.par10 / (self.timeouts + self.solved)))
+            self.logger.debug("Timeouts: %d / %d" % (self.timeouts, self.timeouts + self.solved))
             timeouts = self.timeouts - self.unsolvable
             par1 = self.par1 - (self.unsolvable * self.runtime_cutoff)
             par10 = self.par10 - (self.unsolvable * self.runtime_cutoff * 10)
@@ -64,32 +65,49 @@ class Stats(object):
             par10 = self.par10
             oracle = self.oracle
             sbs = self.sbs
-            
+
         if self.runtime_cutoff:
             n_samples = timeouts + self.solved
-            self.logger.info("PAR1: %.4f" % (par1 / n_samples))
-            self.logger.info("PAR10: %.4f" % (par10 / n_samples))
+            self.logger.debug("n_samples = timeouts + self.solved: %d" % n_samples)
+            if n_samples == 0:
+                par1_out = sys.maxsize
+                par10_out = sys.maxsize
+            else:
+                par1_out = par1 / n_samples
+                par10_out = par10 / n_samples
+            self.logger.info("PAR1: %.4f" % (par1_out))
+            self.logger.info("PAR10: %.4f" % (par10_out))
             self.logger.info("Timeouts: %d / %d" % (timeouts, n_samples))
             self.logger.info("Presolved during feature computation: %d / %d" % (self.presolved_feats, n_samples))
             self.logger.info("Solved: %d / %d" % (self.solved, n_samples))
-            self.logger.info("Unsolvable (%s): %d / %d" % 
-                             (rm_string, self.unsolvable, n_samples+self.unsolvable))
+            self.logger.info("Unsolvable (%s): %d / %d" %
+                             (rm_string, self.unsolvable, n_samples + self.unsolvable))
         else:
             n_samples = self.solved
-            self.logger.info("Number of instances: %d" %(n_samples))
+            self.logger.info("Number of instances: %d" % (n_samples))
             self.logger.info("Average Solution Quality: %.4f" % (par1 / n_samples))
             par10 = par1
-            
-        self.logger.info("Oracle: %.4f" %(oracle / n_samples))
+            par10_out = par10 / n_samples
+
+        if n_samples == 0:
+            oracle_out = sys.maxsize
+        else:
+            oracle_out = oracle / n_samples
+        self.logger.info("Oracle: %.4f" % (oracle_out))
         if sbs > 0:
-            self.logger.info("Single Best: %.4f" %(sbs / n_samples))
-            self.logger.info("Normalized Score: %.4f" %( ( par10 - oracle) / (sbs - oracle)))
-            
+            self.logger.info("Single Best: %.4f" % (sbs / n_samples))
+        if (sbs - oracle) > 0:
+            self.logger.info("Normalized Score: %.4f" % ((par10 - oracle) / (sbs - oracle)))
+
         self.logger.debug("Selection Frequency")
         for algo, n in self.selection_freq.items():
-            self.logger.debug("%s: %.2f" %(algo, n/(timeouts + self.solved)))
-            
-        return par10 / n_samples
+            if (timeouts + self.solved) == 0:
+                frequency = 0
+            else:
+                frequency = n / (timeouts + self.solved)
+            self.logger.debug("%s: %.2f" % (algo, frequency))
+
+        return par10_out
 
     def merge(self, stat):
         '''
@@ -107,9 +125,10 @@ class Stats(object):
         self.presolved_feats += stat.presolved_feats
         self.oracle += stat.oracle
         self.sbs += stat.sbs
-        
+
         for algo, n in stat.selection_freq.items():
-            self.selection_freq[algo]  = self.selection_freq.get(algo, 0) + n
+            self.selection_freq[algo] = self.selection_freq.get(algo, 0) + n
+
 
 class Validator(object):
 
@@ -117,8 +136,8 @@ class Validator(object):
         ''' Constructor '''
         self.logger = logging.getLogger("Validation")
 
-    def validate_runtime(self, schedules: dict, test_scenario: ASlibScenario, 
-                         train_scenario: ASlibScenario=None):
+    def validate_runtime(self, schedules: dict, test_scenario: ASlibScenario,
+                         train_scenario: ASlibScenario = None):
         '''
             validate selected schedules on test instances for runtime
 
@@ -134,7 +153,7 @@ class Validator(object):
         '''
         if test_scenario.performance_type[0] != "runtime":
             raise ValueError("Cannot validate non-runtime scenario with runtime validation method")
-        
+
         stat = Stats(runtime_cutoff=test_scenario.algorithm_cutoff_time)
 
         feature_times = False
@@ -150,7 +169,7 @@ class Validator(object):
         if train_scenario:
             sbs = train_scenario.performance_data.sum(axis=0).idxmin()
             stat.sbs = test_scenario.performance_data.sum(axis=0)[sbs]
-        
+
         ok_status = test_scenario.runstatus_data == "ok"
         unsolvable = ok_status.sum(axis=1) == 0
         stat.unsolvable += unsolvable.sum()
@@ -180,10 +199,11 @@ class Validator(object):
                 continue
 
             for algo, budget in schedule:
-                stat.selection_freq[algo]  = stat.selection_freq.get(algo, 0) + 1
+                stat.selection_freq[algo] = stat.selection_freq.get(algo, 0) + 1
                 time = test_scenario.performance_data[algo][inst]
                 used_time += min(time, budget)
-                if time <= budget and used_time <= test_scenario.algorithm_cutoff_time and test_scenario.runstatus_data[algo][inst] == "ok":
+                if time <= budget and used_time <= test_scenario.algorithm_cutoff_time and \
+                        test_scenario.runstatus_data[algo][inst] == "ok":
                     stat.par1 += used_time
                     stat.solved += 1
                     self.logger.debug("Solved by %s (budget: %f -- required to solve: %f)" % (algo, budget, time))
@@ -196,14 +216,14 @@ class Validator(object):
                     break
 
         stat.par10 = stat.par1 + 9 * \
-            test_scenario.algorithm_cutoff_time * stat.timeouts
-        
+                     test_scenario.algorithm_cutoff_time * stat.timeouts
+
         stat.show()
 
         return stat
 
-    def validate_quality(self, schedules: dict, test_scenario: ASlibScenario, 
-                         train_scenario: ASlibScenario=None):
+    def validate_quality(self, schedules: dict, test_scenario: ASlibScenario,
+                         train_scenario: ASlibScenario = None):
         '''
             validate selected schedules on test instances for solution quality
 
@@ -219,11 +239,11 @@ class Validator(object):
         '''
         if test_scenario.performance_type[0] != "solution_quality":
             raise ValueError("Cannot validate non-solution_quality scenario with solution_quality validation method")
-        
+
         self.logger.debug("FYI: Feature costs and algorithm runstatus is ignored")
-        
+
         stat = Stats(runtime_cutoff=None)
-        
+
         stat.oracle = test_scenario.performance_data.min(axis=1).sum()
         if train_scenario:
             sbs = train_scenario.performance_data.sum(axis=0).idxmin()
@@ -234,21 +254,21 @@ class Validator(object):
             self.logger.debug("Removing *-1 in performance data because of maximization")
             stat.sbs *= -1
             stat.oracle *= -1
-        
+
         for inst, schedule in schedules.items():
             if len(schedule) > 1:
                 self.logger.error("AutoFolio does not support schedules for solution quality")
                 sys.exit(9)
-                
+
             selected_algo = schedule[0][0]
-            stat.selection_freq[selected_algo]  = stat.selection_freq.get(selected_algo, 0) + 1
+            stat.selection_freq[selected_algo] = stat.selection_freq.get(selected_algo, 0) + 1
             perf = test_scenario.performance_data[selected_algo][inst]
-            
-            self.logger.debug("Using %s on %s with performance %f" %(selected_algo, inst, perf))
-            
+
+            self.logger.debug("Using %s on %s with performance %f" % (selected_algo, inst, perf))
+
             stat.par1 += perf
             stat.solved += 1
-        
+
         stat.show(remove_unsolvable=False)
-        
+
         return stat
