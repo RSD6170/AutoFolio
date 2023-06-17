@@ -1,50 +1,41 @@
 import logging
-import functools
-import traceback
-import random
-from itertools import tee
 import pickle
+import random
+import traceback
+from itertools import tee
 
 import numpy as np
 import pandas as pd
 import yaml
-
 from ConfigSpace.configuration_space import Configuration, \
     ConfigurationSpace
 from ConfigSpace.hyperparameters import CategoricalHyperparameter, \
     UniformFloatHyperparameter, UniformIntegerHyperparameter
-
-# SMAC3
-from smac.scenario import Scenario
 # from smac.stats.stats import Stats as AC_Stats
 from smac import AlgorithmConfigurationFacade
+# SMAC3
+from smac.scenario import Scenario
 
-from autofolio.io.cmd import CMDParser
 from aslib_scenario.aslib_scenario import ASlibScenario
-
+from autofolio.feature_preprocessing.feature_group_filtering import FeatureGroupFiltering
+from autofolio.feature_preprocessing.missing_values import ImputerWrapper
 # feature preprocessing
 from autofolio.feature_preprocessing.pca import PCAWrapper
-from autofolio.feature_preprocessing.missing_values import ImputerWrapper
-from autofolio.feature_preprocessing.feature_group_filtering import FeatureGroupFiltering
 from autofolio.feature_preprocessing.standardscaler import StandardScalerWrapper
-
+from autofolio.io.cmd import CMDParser
 # presolving
 from autofolio.pre_solving.aspeed_schedule import Aspeed
-
 # classifiers
 from autofolio.selector.classifiers.random_forest import RandomForest
 from autofolio.selector.classifiers.xgboost import XGBoost
-
-# regressors
-from autofolio.selector.regressors.random_forest import RandomForestRegressor
-
-# selectors
-from autofolio.selector.pairwise_classification import PairwiseClassifier
-from autofolio.selector.multi_classification import MultiClassifier
 from autofolio.selector.ind_regression import IndRegression
 from autofolio.selector.joint_regression import JointRegression
+from autofolio.selector.multi_classification import MultiClassifier
+# selectors
+from autofolio.selector.pairwise_classification import PairwiseClassifier
 from autofolio.selector.pairwise_regression import PairwiseRegression
-
+# regressors
+from autofolio.selector.regressors.random_forest import RandomForestRegressor
 # validation
 from autofolio.validation.validate import Validator, Stats
 

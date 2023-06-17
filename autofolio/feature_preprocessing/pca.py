@@ -2,14 +2,12 @@ import logging
 
 import numpy as np
 import pandas as pd
-
-from sklearn.decomposition import PCA
-
-from ConfigSpace.hyperparameters import CategoricalHyperparameter, \
-    UniformFloatHyperparameter, UniformIntegerHyperparameter
-from ConfigSpace.conditions import EqualsCondition, InCondition
-from ConfigSpace.configuration_space import ConfigurationSpace
+from ConfigSpace import CategoricalHyperparameter, \
+    UniformIntegerHyperparameter
 from ConfigSpace import Configuration
+from ConfigSpace import ConfigurationSpace
+from ConfigSpace import InCondition
+from sklearn.decomposition import PCA
 
 from aslib_scenario.aslib_scenario import ASlibScenario
 

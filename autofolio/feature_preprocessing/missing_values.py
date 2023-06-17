@@ -2,13 +2,10 @@ import logging
 
 import numpy as np
 import pandas as pd
-
-from sklearn.impute import SimpleImputer
-
-from ConfigSpace.hyperparameters import CategoricalHyperparameter, \
-    UniformFloatHyperparameter, UniformIntegerHyperparameter
+from ConfigSpace import CategoricalHyperparameter
 from ConfigSpace import Configuration
-from ConfigSpace.configuration_space import ConfigurationSpace
+from ConfigSpace import ConfigurationSpace
+from sklearn.impute import SimpleImputer
 
 from aslib_scenario.aslib_scenario import ASlibScenario
 

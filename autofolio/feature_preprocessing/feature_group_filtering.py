@@ -1,11 +1,5 @@
 import logging
 
-import numpy as np
-import pandas as pd
-
-from ConfigSpace.hyperparameters import CategoricalHyperparameter, \
-    UniformFloatHyperparameter, UniformIntegerHyperparameter
-
 __author__ = "Marius Lindauer"
 __license__ = "BSD"
 

@@ -1,7 +1,7 @@
 import argparse
-import sys
-import os
 import logging
+import os
+import sys
 
 __author__ = "Marius Lindauer"
 __version__ = "2.0.0"

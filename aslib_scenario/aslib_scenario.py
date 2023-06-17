@@ -1,15 +1,14 @@
+import collections
+import copy
+import logging
 import os
 import sys
-import logging
-import yaml
-import functools
-import arff  # liac-arff
-import copy
-import collections
 
-from sklearn.model_selection import KFold
-import pandas as pd
+import arff  # liac-arff
 import numpy as np
+import pandas as pd
+import yaml
+from sklearn.model_selection import KFold
 
 __author__ = "Marius Lindauer"
 __version__ = "2.0.0"

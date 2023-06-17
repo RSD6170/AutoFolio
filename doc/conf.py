@@ -14,8 +14,7 @@
 
 import datetime
 import sys
-import os
-import shlex
+
 import sphinx_bootstrap_theme
 
 sys.path.insert(0, '..')

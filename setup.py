@@ -1,4 +1,3 @@
-import os
 import setuptools
 
 console_scripts = [

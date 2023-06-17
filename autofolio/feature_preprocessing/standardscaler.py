@@ -2,14 +2,10 @@ import logging
 
 import numpy as np
 import pandas as pd
-
-from sklearn.preprocessing import StandardScaler
-
-from ConfigSpace.hyperparameters import CategoricalHyperparameter, \
-    UniformFloatHyperparameter, UniformIntegerHyperparameter
-from ConfigSpace.conditions import EqualsCondition, InCondition
-from ConfigSpace.configuration_space import ConfigurationSpace
+from ConfigSpace import CategoricalHyperparameter
 from ConfigSpace import Configuration
+from ConfigSpace import ConfigurationSpace
+from sklearn.preprocessing import StandardScaler
 
 from aslib_scenario.aslib_scenario import ASlibScenario
 

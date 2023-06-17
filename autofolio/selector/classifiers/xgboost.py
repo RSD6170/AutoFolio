@@ -1,15 +1,9 @@
 import numpy as np
-import pandas as pd
-
-from ConfigSpace.hyperparameters import CategoricalHyperparameter, \
-    UniformFloatHyperparameter, UniformIntegerHyperparameter
-from ConfigSpace.conditions import EqualsCondition, InCondition
-from ConfigSpace.configuration_space import ConfigurationSpace
-from ConfigSpace import Configuration
-
-from aslib_scenario.aslib_scenario import ASlibScenario
-
 import xgboost as xgb
+from ConfigSpace import Configuration
+from ConfigSpace import ConfigurationSpace
+from ConfigSpace import InCondition
+from ConfigSpace import UniformFloatHyperparameter, UniformIntegerHyperparameter
 
 __author__ = "Marius Lindauer"
 __license__ = "BSD"

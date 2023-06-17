@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
-import logging
-import sys
-import os
 import inspect
+import logging
+import os
+import sys
+
 cmd_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile( inspect.currentframe() ))[0]))
 cmd_folder = os.path.realpath(os.path.join(cmd_folder, ".."))
 if cmd_folder not in sys.path:

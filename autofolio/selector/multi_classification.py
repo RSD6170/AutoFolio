@@ -1,15 +1,10 @@
 import logging
-import traceback
 
 import numpy as np
-import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
-
-from ConfigSpace.hyperparameters import CategoricalHyperparameter, \
-    UniformFloatHyperparameter, UniformIntegerHyperparameter
-from ConfigSpace.conditions import EqualsCondition, InCondition
-from ConfigSpace.configuration_space import ConfigurationSpace
 from ConfigSpace import Configuration
+from ConfigSpace import ConfigurationSpace
+from ConfigSpace import InCondition
+from sklearn.preprocessing import MinMaxScaler
 
 from aslib_scenario.aslib_scenario import ASlibScenario
 
@@ -55,9 +50,6 @@ class MultiClassifier(object):
                          (self.classifier_class))
 
         self.algorithms = scenario.algorithms
-
-        from sklearn.utils import check_array
-        from sklearn.tree._tree import DTYPE
 
         n_algos = len(scenario.algorithms)
         X = scenario.feature_data.values
