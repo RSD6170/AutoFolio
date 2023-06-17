@@ -8,7 +8,8 @@ By calling:
 
 `python3 ../../scripts/autofolio --performance_csv data/perf.csv --feature_csv data/features.csv --maximize`
 
-AutoFolio will perform a 10-fold cross validation on selecting the algorithm with the largest performance value (`--maximize`) for each given instance. We expect a performance of roughly 0.99.
+AutoFolio will perform a 10-fold cross validation on selecting the algorithm with the largest performance
+value (`--maximize`) for each given instance. We expect a performance of roughly 0.99.
 
 
 

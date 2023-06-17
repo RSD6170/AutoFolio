@@ -8,7 +8,8 @@ By calling:
 
 `python3 ../../scripts/autofolio --scenario data/`
 
-AutoFolio will perform a 10-fold cross validation on selecting the algorithm with the smallest runtime (see `data/description.txt`) for each given instance. We expect a performance of roughly 135.
+AutoFolio will perform a 10-fold cross validation on selecting the algorithm with the smallest runtime (
+see `data/description.txt`) for each given instance. We expect a performance of roughly 135.
 
 To get a better performance, please use the option `--tune`.
 

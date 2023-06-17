@@ -32,5 +32,3 @@ af.fit(config=config, save_fn=model_fn)
 pred = AFCsvFacade.load_and_predict(vec=np.array([1.]), load_fn=model_fn)
 
 print(pred)
-
-

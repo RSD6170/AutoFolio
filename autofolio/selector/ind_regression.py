@@ -51,7 +51,7 @@ class IndRegression(object):
 
         n_algos = len(scenario.algorithms)
         X = scenario.feature_data.values
-        
+
         for i in range(n_algos):
             y = scenario.performance_data[scenario.algorithms[i]].values
             reg = self.regressor_class()
@@ -76,7 +76,7 @@ class IndRegression(object):
         if scenario.algorithm_cutoff_time:
             cutoff = scenario.algorithm_cutoff_time
         else:
-            cutoff = 2**31
+            cutoff = 2 ** 31
 
         n_algos = len(scenario.algorithms)
         X = scenario.feature_data.values
@@ -86,12 +86,13 @@ class IndRegression(object):
             Y = reg.predict(X)
             scores[:, i] += Y
 
-        #self.logger.debug(
+        # self.logger.debug(
         #   sorted(list(zip(scenario.algorithms, scores)), key=lambda x: x[1], reverse=True))
         algo_indx = np.argmin(scores, axis=1)
-        
-        schedules = dict((str(inst),[s]) for s,inst in zip([(scenario.algorithms[i], cutoff+1) for i in algo_indx], scenario.feature_data.index))
-        #self.logger.debug(schedules)
+
+        schedules = dict((str(inst), [s]) for s, inst in
+                         zip([(scenario.algorithms[i], cutoff + 1) for i in algo_indx], scenario.feature_data.index))
+        # self.logger.debug(schedules)
         return schedules
 
     def get_attributes(self):
@@ -104,6 +105,6 @@ class IndRegression(object):
             list of tuples of (attribute,value) 
         '''
         reg_attr = self.regressors[0].get_attributes()
-        attr = [{self.regressor_class.__name__:reg_attr}]
+        attr = [{self.regressor_class.__name__: reg_attr}]
 
         return attr

@@ -19,7 +19,7 @@ class PairwiseClassifier(object):
         '''
             adds parameters to ConfigurationSpace 
         '''
-        
+
         selector = cs.get_hyperparameter("selector")
         classifier = cs.get_hyperparameter("classifier")
         if "PairwiseClassifier" in selector.choices:
@@ -57,7 +57,7 @@ class PairwiseClassifier(object):
         # uses float32 and we pass float64,
         # the normalization ensures that floats
         # are not converted to inf or -inf
-        #X = (X - np.min(X)) / (np.max(X) - np.min(X))
+        # X = (X - np.min(X)) / (np.max(X) - np.min(X))
         X = self.normalizer.fit_transform(X)
         for i in range(n_algos):
             for j in range(i + 1, n_algos):
@@ -87,7 +87,7 @@ class PairwiseClassifier(object):
         if scenario.algorithm_cutoff_time:
             cutoff = scenario.algorithm_cutoff_time
         else:
-            cutoff = 2**31
+            cutoff = 2 ** 31
 
         n_algos = len(scenario.algorithms)
         X = scenario.feature_data.values
@@ -102,12 +102,13 @@ class PairwiseClassifier(object):
                 scores[Y == 0, j] += 1
                 clf_indx += 1
 
-        #self.logger.debug(
+        # self.logger.debug(
         #   sorted(list(zip(scenario.algorithms, scores)), key=lambda x: x[1], reverse=True))
         algo_indx = np.argmax(scores, axis=1)
-        
-        schedules = dict((str(inst),[s]) for s,inst in zip([(scenario.algorithms[i], cutoff+1) for i in algo_indx], scenario.feature_data.index))
-        #self.logger.debug(schedules)
+
+        schedules = dict((str(inst), [s]) for s, inst in
+                         zip([(scenario.algorithms[i], cutoff + 1) for i in algo_indx], scenario.feature_data.index))
+        # self.logger.debug(schedules)
         return schedules
 
     def get_attributes(self):
@@ -120,6 +121,6 @@ class PairwiseClassifier(object):
             list of tuples of (attribute,value) 
         '''
         class_attr = self.classifiers[0].get_attributes()
-        attr = [{self.classifier_class.__name__:class_attr}]
+        attr = [{self.classifier_class.__name__: class_attr}]
 
         return attr

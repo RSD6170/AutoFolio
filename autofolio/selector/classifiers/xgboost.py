@@ -16,11 +16,11 @@ class XGBoost(object):
         '''
             adds parameters to ConfigurationSpace 
         '''
-        
+
         try:
             classifier = cs.get_hyperparameter("classifier")
             if "XGBoost" not in classifier.choices:
-                return 
+                return
 
             num_round = UniformIntegerHyperparameter(
                 name="xgb:num_round", lower=10, upper=100, default_value=50, log=True)
@@ -89,9 +89,8 @@ class XGBoost(object):
             cond = InCondition(
                 child=eta, parent=classifier, values=["XGBoost"])
             cs.add_condition(cond)
-        except: 
+        except:
             return
-        
 
     def __init__(self):
         '''
@@ -120,21 +119,20 @@ class XGBoost(object):
                 configuration
 
         '''
-        
+
         xgb_config = {'nthread': 1,
-         'silent': 1, 
-         'objective': 'binary:logistic',
-         'seed': 12345}
+                      'silent': 1,
+                      'objective': 'binary:logistic',
+                      'seed': 12345}
         for param in config:
             if param.startswith("xgb:") and config[param] is not None:
-                self.attr.append("%s=%s"%(param[4:],config[param]))
+                self.attr.append("%s=%s" % (param[4:], config[param]))
             if param == "xgb:num_round":
                 continue
             xgb_config[param[4:]] = config[param]
-            
+
         dtrain = xgb.DMatrix(X, label=y, weight=weights)
         self.model = xgb.train(xgb_config, dtrain, config["xgb:num_round"])
-        
 
     def predict(self, X):
         '''

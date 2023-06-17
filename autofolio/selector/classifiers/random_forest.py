@@ -31,7 +31,7 @@ class RandomForest(object):
                 name="rf:max_features", choices=["sqrt", "log2", "None"], default_value="sqrt")
             cs.add_hyperparameter(max_features)
             max_depth = UniformIntegerHyperparameter(
-                name="rf:max_depth", lower=10, upper=2**31, default_value=2**31, log=True)
+                name="rf:max_depth", lower=10, upper=2 ** 31, default_value=2 ** 31, log=True)
             cs.add_hyperparameter(max_depth)
             min_samples_split = UniformIntegerHyperparameter(
                 name="rf:min_samples_split", lower=2, upper=100, default_value=2, log=True)
@@ -96,9 +96,9 @@ class RandomForest(object):
         '''
 
         self.model = RandomForestClassifier(n_estimators=config["rf:n_estimators"],
-                                            max_features= config[
+                                            max_features=config[
                                                 "rf:max_features"] if config[
-                                                "rf:max_features"] != "None" else None,
+                                                                          "rf:max_features"] != "None" else None,
                                             criterion=config["rf:criterion"],
                                             max_depth=config["rf:max_depth"],
                                             min_samples_split=config[
@@ -124,7 +124,7 @@ class RandomForest(object):
         '''
 
         return self.model.predict(X)
-    
+
     def get_attributes(self):
         '''
             returns a list of tuples of (attribute,value) 
@@ -135,11 +135,10 @@ class RandomForest(object):
             list of tuples of (attribute,value) 
         '''
         attr = []
-        attr.append("max_depth = %d" %(self.model.max_depth))
-        attr.append("min_samples_split = %d" %(self.model.min_samples_split))
-        attr.append("min_samples_leaf = %d" %(self.model.min_samples_leaf))
-        attr.append("criterion = %s" %(self.model.criterion))
-        attr.append("n_estimators = %d" %(self.model.n_estimators))
-        attr.append("max_features = %s" %(self.model.max_features))
+        attr.append("max_depth = %d" % (self.model.max_depth))
+        attr.append("min_samples_split = %d" % (self.model.min_samples_split))
+        attr.append("min_samples_leaf = %d" % (self.model.min_samples_leaf))
+        attr.append("criterion = %s" % (self.model.criterion))
+        attr.append("n_estimators = %d" % (self.model.n_estimators))
+        attr.append("max_features = %s" % (self.model.max_features))
         return attr
-        

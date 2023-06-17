@@ -19,7 +19,7 @@ class MultiClassifier(object):
         '''
             adds parameters to ConfigurationSpace 
         '''
-        
+
         selector = cs.get_hyperparameter("selector")
         classifier = cs.get_hyperparameter("classifier")
         if "MultiClassifier" in selector.choices:
@@ -57,14 +57,14 @@ class MultiClassifier(object):
         # uses float32 and we pass float64,
         # the normalization ensures that floats
         # are not converted to inf or -inf
-        #X = (X - np.min(X)) / (np.max(X) - np.min(X))
+        # X = (X - np.min(X)) / (np.max(X) - np.min(X))
         X = self.normalizer.fit_transform(X)
-        y = np.argmin(scenario.performance_data.values,axis=1)
+        y = np.argmin(scenario.performance_data.values, axis=1)
         weights = scenario.performance_data.std(axis=1)
         clf = self.classifier_class()
         clf.fit(X, y, config, weights)
         self.classifier = clf
-         
+
     def predict(self, scenario: ASlibScenario):
         '''
             predict schedules for all instances in ASLib scenario data
@@ -83,15 +83,16 @@ class MultiClassifier(object):
         if scenario.algorithm_cutoff_time:
             cutoff = scenario.algorithm_cutoff_time
         else:
-            cutoff = 2**31
+            cutoff = 2 ** 31
 
         n_algos = len(scenario.algorithms)
         X = scenario.feature_data.values
         X = self.normalizer.transform(X)
         algo_indx = self.classifier.predict(X)
-        
-        schedules = dict((str(inst),[s]) for s,inst in zip([(scenario.algorithms[i], cutoff+1) for i in algo_indx], scenario.feature_data.index))
-        #self.logger.debug(schedules)
+
+        schedules = dict((str(inst), [s]) for s, inst in
+                         zip([(scenario.algorithms[i], cutoff + 1) for i in algo_indx], scenario.feature_data.index))
+        # self.logger.debug(schedules)
         return schedules
 
     def get_attributes(self):
@@ -104,6 +105,6 @@ class MultiClassifier(object):
             list of tuples of (attribute,value) 
         '''
         class_attr = self.classifiers[0].get_attributes()
-        attr = [{self.classifier_class.__name__:class_attr}]
+        attr = [{self.classifier_class.__name__: class_attr}]
 
         return attr

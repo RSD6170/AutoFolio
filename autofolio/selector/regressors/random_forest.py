@@ -91,16 +91,16 @@ class RandomForestRegressor(object):
         '''
 
         self.model = sklearn.ensemble.RandomForestRegressor(n_estimators=config["rfreg:n_estimators"],
-                                            max_features=config[
-                                                "rfreg:max_features"] if config[
-                                                "rfreg:max_features"] != "None" else None,
-                                            max_depth=config["rf:max_depth"],
-                                            min_samples_split=config[
-                                                "rfreg:min_samples_split"],
-                                            min_samples_leaf=config[
-                                                "rfreg:min_samples_leaf"],
-                                            bootstrap=config["rfreg:bootstrap"],
-                                            random_state=12345)
+                                                            max_features=config[
+                                                                "rfreg:max_features"] if config[
+                                                                                             "rfreg:max_features"] != "None" else None,
+                                                            max_depth=config["rf:max_depth"],
+                                                            min_samples_split=config[
+                                                                "rfreg:min_samples_split"],
+                                                            min_samples_leaf=config[
+                                                                "rfreg:min_samples_leaf"],
+                                                            bootstrap=config["rfreg:bootstrap"],
+                                                            random_state=12345)
         self.model.fit(X, y)
 
     def predict(self, X):
@@ -118,7 +118,7 @@ class RandomForestRegressor(object):
         '''
 
         return self.model.predict(X)
-    
+
     def get_attributes(self):
         '''
             returns a list of tuples of (attribute,value) 
@@ -135,4 +135,3 @@ class RandomForestRegressor(object):
         attr.append("n_estimators = %d" % (self.model.n_estimators))
         attr.append("max_features = %s" % (self.model.max_features))
         return attr
-        

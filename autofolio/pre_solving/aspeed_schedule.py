@@ -40,7 +40,7 @@ class Aspeed(object):
         cond = InCondition(child=pre_cutoff, parent=pre_solving, values=[True])
         cs.add_condition(cond)
 
-    def __init__(self, clingo: str=None, runsolver: str=None, enc_fn: str=None):
+    def __init__(self, clingo: str = None, runsolver: str = None, enc_fn: str = None):
         '''
             Constructor
 
@@ -102,12 +102,12 @@ class Aspeed(object):
             if X.shape[0] > self.data_threshold:
                 random_indx = np.random.choice(
                     range(X.shape[0]),
-                    size=min(X.shape[0], max(int(X.shape[0] * self.data_fraction), self.data_threshold)), 
+                    size=min(X.shape[0], max(int(X.shape[0] * self.data_fraction), self.data_threshold)),
                     replace=True)
                 X = X[random_indx, :]
 
-            self.logger.debug("#Instances for pre-solving schedule: %d" %(X.shape[0]))
-            times = ["time(i%d, %d, %d)." % (i, j, max(1,math.ceil(X[i, j])))
+            self.logger.debug("#Instances for pre-solving schedule: %d" % (X.shape[0]))
+            times = ["time(i%d, %d, %d)." % (i, j, max(1, math.ceil(X[i, j])))
                      for i in range(X.shape[0]) for j in range(X.shape[1])]
 
             kappa = "kappa(%d)." % (config["pre:cutoff"])
@@ -136,9 +136,9 @@ class Aspeed(object):
         p = subprocess.Popen(cmd,
                              stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True, universal_newlines=True)
         stdout, stderr = p.communicate(input=data_in)
-        
+
         self.logger.debug(stdout)
-        
+
         schedule_dict = {}
         for line in stdout.split("\n"):
             if line.startswith("slice"):
@@ -149,11 +149,11 @@ class Aspeed(object):
                     algo = algorithms[int(s_tuple[1])]
                     budget = int(s_tuple[2])
                     schedule_dict[algo] = budget
-        
+
         self.schedule = sorted(schedule_dict.items(), key=lambda x: x[1])
-        
+
         self.logger.info("Fitted Schedule: %s" % (self.schedule))
-        
+
     def predict(self, scenario: ASlibScenario):
         '''
             transform ASLib scenario data

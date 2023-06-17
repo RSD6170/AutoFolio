@@ -28,7 +28,7 @@ setuptools.setup(
     tests_require=['mock',
                    'nose'],
     test_suite='nose.collector',
-    entry_points = {
+    entry_points={
         'console_scripts': console_scripts
     }
 )
