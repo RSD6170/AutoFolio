@@ -89,7 +89,7 @@ class ImputerWrapper(object):
         self.fit(scenario, config)
         scenario = self.transform(scenario)
         return scenario
-    
+
     def get_attributes(self):
         '''
             returns a list of tuples of (attribute,value) 
@@ -105,4 +105,4 @@ class ImputerWrapper(object):
             -------
             list of tuples of (attribute,value) 
         '''
-        return ["Strategy=%s" %(self.imputer.strategy)]
+        return ["Strategy=%s" % (self.imputer.strategy)]
