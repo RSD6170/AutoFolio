@@ -3,7 +3,9 @@ import math
 import os
 import subprocess
 import sys
+from datetime import datetime
 
+import func_timeout
 import numpy as np
 from ConfigSpace import CategoricalHyperparameter, UniformIntegerHyperparameter
 from ConfigSpace import Configuration
@@ -35,7 +37,7 @@ class Aspeed(object):
         '''
 
         pre_solving = CategoricalHyperparameter(
-            "presolving", choices=[True, False], default_value=True) #TODO evaluate if default better on or off
+            "presolving", choices=[True, False], default_value=False) #TODO evaluate if default better on or off
         cs.add_hyperparameter(pre_solving)
         pre_cutoff = UniformIntegerHyperparameter(
             "pre:cutoff", lower=1, upper=cutoff, default_value=math.ceil(cutoff * 0.1), log=True)
@@ -127,6 +129,7 @@ class Aspeed(object):
             budget = slice.arguments[2].number
             schedule_dict[algo] = budget
         self.schedule = sorted(schedule_dict.items(), key=lambda x: x[1])
+        print(self.schedule)
 
     def _call_clingo(self, data_in: str, algorithms: list):
         '''
@@ -151,10 +154,15 @@ class Aspeed(object):
 
         ctl.add(data_in)
         ctl.ground()
-        ctl.solve(on_model=modelCall)
+        time_prestart = datetime.now()
+        try:
+            func_timeout.func_timeout(self.cutoff, ctl.solve, kwargs=dict(on_model= modelCall))
+        except func_timeout.FunctionTimedOut:
+            self.logger.info("Terminated aspeed after timeout")
         #TODO implement timeout
-
-        self.logger.info("Fitted Schedule: %s" % (self.schedule))
+        time_poststart = datetime.now()
+        delta_time = time_poststart - time_prestart
+        self.logger.info("Fitted Schedule in %d seconds: %s" % (delta_time.total_seconds(),self.schedule))
 
     def predict(self, scenario: ASlibScenario):
         '''

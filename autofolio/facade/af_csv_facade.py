@@ -76,4 +76,4 @@ class AFCsvFacade(object):
         af = AutoFolio(random_seed=42)  # random seed doesn't matter here
         pred = af.read_model_and_predict(model_fn=load_fn, feature_vec=vec)
         print("Selected Schedule [(algorithm, budget)]: %s" % (pred))
-        return pred[0][0]
+        return pred
