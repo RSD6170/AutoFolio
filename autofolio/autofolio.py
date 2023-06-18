@@ -117,6 +117,8 @@ class AutoFolio(object):
                 config["runcount_limit"] = args_.runcount_limit
             if not config.get("output-dir"):
                 config["output-dir"] = args_.output_dir
+            if not config.get("presolve"):
+                config["presolving"] = True
 
             self.cs = self.get_cs(scenario, config)
 

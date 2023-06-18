@@ -9,6 +9,9 @@ from ConfigSpace import CategoricalHyperparameter, UniformIntegerHyperparameter
 from ConfigSpace import Configuration
 from ConfigSpace import ConfigurationSpace
 from ConfigSpace import InCondition
+from clingo import Application, Control
+from clingo.script import enable_python
+from clingo.solving import Model
 
 from aslib_scenario.aslib_scenario import ASlibScenario
 
@@ -32,7 +35,7 @@ class Aspeed(object):
         '''
 
         pre_solving = CategoricalHyperparameter(
-            "presolving", choices=[True, False], default_value=False)
+            "presolving", choices=[True, False], default_value=True) #TODO evaluate if default better on or off
         cs.add_hyperparameter(pre_solving)
         pre_cutoff = UniformIntegerHyperparameter(
             "pre:cutoff", lower=1, upper=cutoff, default_value=math.ceil(cutoff * 0.1), log=True)
@@ -117,6 +120,14 @@ class Aspeed(object):
             # call aspeed and save schedule
             self._call_clingo(data_in=data_in, algorithms=scenario.performance_data.columns)
 
+    def handleOutput(self, model : Model, algorithms : list):
+        schedule_dict = {}
+        for slice in model.symbols(shown=True):
+            algo = algorithms[slice.arguments[1].number]
+            budget = slice.arguments[2].number
+            schedule_dict[algo] = budget
+        self.schedule = sorted(schedule_dict.items(), key=lambda x: x[1])
+
     def _call_clingo(self, data_in: str, algorithms: list):
         '''
             call clingo on self.enc_fn and facts from data_in
@@ -128,29 +139,20 @@ class Aspeed(object):
             algorithms: list
                 list of algorithm names
         '''
-        cmd = "%s -C %d -M %d -w /dev/null %s %s -" % (
-            self.runsolver, self.cutoff, self.mem_limit, self.clingo, self.enc_fn)
 
-        self.logger.info("Call: %s" % (cmd))
+        def modelCall(model):
+            self.handleOutput(model, algorithms)
 
-        p = subprocess.Popen(cmd,
-                             stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True, universal_newlines=True)
-        stdout, stderr = p.communicate(input=data_in)
+        ctl = Control()
+        enable_python()
+        #TODO limit runtimee
 
-        self.logger.debug(stdout)
+        ctl.load("aspeed/enc1.lp")
 
-        schedule_dict = {}
-        for line in stdout.split("\n"):
-            if line.startswith("slice"):
-                schedule_dict = {}  # reinitizalize for every found schedule
-                slices_str = line.split(" ")
-                for slice in slices_str:
-                    s_tuple = slice.replace("slice(", "").rstrip(")").split(",")
-                    algo = algorithms[int(s_tuple[1])]
-                    budget = int(s_tuple[2])
-                    schedule_dict[algo] = budget
-
-        self.schedule = sorted(schedule_dict.items(), key=lambda x: x[1])
+        ctl.add(data_in)
+        ctl.ground()
+        ctl.solve(on_model=modelCall)
+        #TODO implement timeout
 
         self.logger.info("Fitted Schedule: %s" % (self.schedule))
 

@@ -1,6 +1,7 @@
 #script(python)
 
-#import gringo
+from clingo import Number, Tuple_, Function
+from clingo.symbol import parse_term
 
 ts = {}
 def insert(i,s,t):
@@ -8,20 +9,20 @@ def insert(i,s,t):
   if not ts.get(key):
     ts[key] = []
   ts[key].append([i,t])
-  return 1
+  return parse_term("1")
 
 def order(s):
   key = str(s)
   if not ts.get(key):
     ts[key] = []
-  ts[key].sort(key=lambda x: int(x[1]))
+  ts[key].sort(key=lambda x: int(x[1].number))
   p = None
   r = []
   for i, v in ts[key]:
     if p:
-      r.append((p,i))
+      r.append(Tuple_([p,i]))
     p = i
-  return r
+  return Tuple_(r)
 
 #end.
 
