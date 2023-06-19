@@ -17,6 +17,7 @@ __license__ = "BSD"
 
 class PCAWrapper(object):
 
+    # fix by @kvdblom
     @staticmethod
     def add_params(cs: ConfigurationSpace, scenario: ASlibScenario):
         '''

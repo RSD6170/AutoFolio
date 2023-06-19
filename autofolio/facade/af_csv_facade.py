@@ -69,6 +69,7 @@ class AFCsvFacade(object):
 
         return score
 
+    #fix by @lteu and @felixvuo
     @staticmethod
     def load_and_predict(vec: np.ndarray,
                          load_fn: str):

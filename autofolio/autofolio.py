@@ -368,6 +368,7 @@ class AutoFolio(object):
             self.cs.add_hyperparameter(fs_param)
 
         # preprocessing
+        # fix by @kvdblom
         if autofolio_config.get("pca", True):
             PCAWrapper.add_params(self.cs, scenario)
 

@@ -32,6 +32,7 @@ class Stats(object):
 
         self.logger = logging.getLogger("Stats")
 
+    # fix by @kvdblom
     def show(self, remove_unsolvable: bool = True):
         '''
             shows statistics
