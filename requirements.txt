@@ -5,7 +5,7 @@ scikit-learn>=0.20.0
 matplotlib
 pandas
 xgboost
-ConfigSpace
+ConfigSpace==0.6.1
 pyrfr
 smac
 clingo
