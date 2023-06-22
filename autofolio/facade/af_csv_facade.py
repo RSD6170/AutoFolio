@@ -14,8 +14,9 @@ __version__ = "2.1.0"
 class AFCsvFacade(object):
 
     def __init__(self,
-                 perf_fn: str,
-                 feat_fn: str,
+                 perf_fn: str = None,
+                 feat_fn: str = None,
+                 scenario_path: str = None,
                  objective: str = "solution_quality",
                  runtime_cutoff: float = None,
                  maximize: bool = True,
@@ -24,7 +25,11 @@ class AFCsvFacade(object):
                  ):
         """ Constructor """
         self.scenario = ASlibScenario()
-        self.scenario.read_from_csv(perf_fn=perf_fn,
+
+        if not scenario_path is None:
+            self.scenario.read_scenario(scenario_path)
+        else:
+            self.scenario.read_from_csv(perf_fn=perf_fn,
                                     feat_fn=feat_fn,
                                     objective=objective,
                                     runtime_cutoff=runtime_cutoff,
@@ -71,7 +76,7 @@ class AFCsvFacade(object):
 
     #fix by @lteu and @felixvuo
     @staticmethod
-    def load_and_predict(vec: np.ndarray,
+    def load_and_predict(vec: list,
                          load_fn: str):
         """ get predicted algorithm for given meta-feature vector"""
         af = AutoFolio(random_seed=42)  # random seed doesn't matter here

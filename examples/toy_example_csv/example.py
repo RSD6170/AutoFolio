@@ -29,6 +29,6 @@ af.fit(config=config, save_fn=model_fn)
 
 # load AutoFolio model and
 # get predictions for new meta-feature vector
-pred = AFCsvFacade.load_and_predict(vec=np.array([1.]), load_fn=model_fn)
+pred = AFCsvFacade.load_and_predict(vec=[1.], load_fn=model_fn)
 
 print(pred)
