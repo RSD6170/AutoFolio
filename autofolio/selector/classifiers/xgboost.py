@@ -120,7 +120,7 @@ class XGBoost(object):
 
         '''
 
-        xgb_config = {'nthread': 1,
+        xgb_config = {'nthread': -1, # multi-threading
                       'silent': 1,
                       'objective': 'binary:logistic',
                       'seed': 12345}

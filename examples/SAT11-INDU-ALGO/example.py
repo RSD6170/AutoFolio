@@ -16,7 +16,7 @@ af = AFCsvFacade(scenario_path=scenario_path)
 af.fit()
 
 # tune AutoFolio's hyperparameter configuration for 20 iterations
-config = af.tune(wallclock_limit=300)
+config = af.tune(runcount_limit=80)
 
 # evaluate configuration using a 10-fold cross validation
 score = af.cross_validation(config=config)
