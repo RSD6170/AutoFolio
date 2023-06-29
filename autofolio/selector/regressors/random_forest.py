@@ -100,7 +100,8 @@ class RandomForestRegressor(object):
                                                             min_samples_leaf=config[
                                                                 "rfreg:min_samples_leaf"],
                                                             bootstrap=config["rfreg:bootstrap"],
-                                                            random_state=12345)
+                                                            random_state=12345,
+                                                            n_jobs=-1) # multi-threading
         self.model.fit(X, y)
 
     def predict(self, X):

@@ -106,7 +106,8 @@ class RandomForest(object):
                                             min_samples_leaf=config[
                                                 "rf:min_samples_leaf"],
                                             bootstrap=config["rf:bootstrap"],
-                                            random_state=12345)
+                                            random_state=12345,
+                                            n_jobs=-1) # multi-threading
         self.model.fit(X, y, weights)
 
     def predict(self, X):
