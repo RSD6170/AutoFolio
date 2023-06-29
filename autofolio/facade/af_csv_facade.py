@@ -80,6 +80,6 @@ class AFCsvFacade(object):
                          load_fn: str):
         """ get predicted algorithm for given meta-feature vector"""
         af = AutoFolio(random_seed=42)  # random seed doesn't matter here
-        pred = af.read_model_and_predict(model_fn=load_fn, feature_vec=vec)
-        print("Selected Schedule [(algorithm, budget)]: %s" % (pred))
-        return pred
+        pre_pred, pred = af.read_model_and_predict(model_fn=load_fn, feature_vec=vec)
+        print("Selected Schedule [(algorithm, budget)]: pre-schedule: %s,        schedule: %s" % (pre_pred, pred))
+        return (pre_pred, pred)

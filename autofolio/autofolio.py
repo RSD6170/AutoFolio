@@ -633,8 +633,10 @@ class AutoFolio(object):
         feature_pre_pipeline, pre_solver, selector = self.fit(
             scenario=training_scenario, config=config)
 
-        schedules = self.predict(
+        separated_schedules = self.predict(
             test_scenario, config, feature_pre_pipeline, pre_solver, selector)
+
+        schedules = dict([ (instance, sorted(pre_schedule + schedule, key=lambda x: x[1])) for instance, (pre_schedule, schedule) in separated_schedules.items()])
 
         val = Validator()
         if scenario.performance_type[0] == "runtime":
@@ -874,7 +876,7 @@ class AutoFolio(object):
         # combine schedules
         if pre_solving_schedule:
             return dict(
-                (inst, pre_solving_schedule.get(inst, []) + schedule) for inst, schedule in pred_schedules.items())
+                (inst, (pre_solving_schedule.get(inst, []), schedule)) for inst, schedule in pred_schedules.items())
         else:
             return pred_schedules
 

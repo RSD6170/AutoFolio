@@ -146,7 +146,7 @@ class Aspeed(object):
         def modelCall(model):
             self.handleOutput(model, algorithms)
 
-        ctl = Control(arguments=["-t 12"]) #run with 12 cores max
+        ctl = Control(arguments=["-t 15"]) #run with 15 cores max
         enable_python()
         #TODO limit runtimee
 
