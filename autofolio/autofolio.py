@@ -16,7 +16,7 @@ from smac import AlgorithmConfigurationFacade
 # SMAC3
 from smac.scenario import Scenario
 
-from aslib_scenario.aslib_scenario import ASlibScenario
+from autofolio.aslib.aslib_scenario import ASlibScenario
 from autofolio.feature_preprocessing.feature_group_filtering import FeatureGroupFiltering
 from autofolio.feature_preprocessing.missing_values import ImputerWrapper
 # feature preprocessing

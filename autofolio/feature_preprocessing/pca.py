@@ -9,7 +9,7 @@ from ConfigSpace import ConfigurationSpace
 from ConfigSpace import InCondition
 from sklearn.decomposition import PCA
 
-from aslib_scenario.aslib_scenario import ASlibScenario
+from autofolio.aslib.aslib_scenario import ASlibScenario
 
 __author__ = "Marius Lindauer"
 __license__ = "BSD"

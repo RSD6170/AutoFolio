@@ -1,7 +1,6 @@
 import logging
 import math
 import os
-import subprocess
 import sys
 from datetime import datetime
 
@@ -11,11 +10,11 @@ from ConfigSpace import CategoricalHyperparameter, UniformIntegerHyperparameter
 from ConfigSpace import Configuration
 from ConfigSpace import ConfigurationSpace
 from ConfigSpace import InCondition
-from clingo import Application, Control
+from clingo import Control
 from clingo.script import enable_python
 from clingo.solving import Model
 
-from aslib_scenario.aslib_scenario import ASlibScenario
+from autofolio.aslib.aslib_scenario import ASlibScenario
 
 __author__ = "Marius Lindauer"
 __license__ = "BSD"

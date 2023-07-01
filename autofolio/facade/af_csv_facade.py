@@ -3,7 +3,7 @@ import logging
 import numpy as np
 from ConfigSpace.configuration_space import Configuration
 
-from aslib_scenario.aslib_scenario import ASlibScenario
+from autofolio.aslib.aslib_scenario import ASlibScenario
 from autofolio.autofolio import AutoFolio
 
 __author__ = "Marius Lindauer"
