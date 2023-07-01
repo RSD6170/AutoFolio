@@ -636,7 +636,7 @@ class AutoFolio(object):
         separated_schedules = self.predict(
             test_scenario, config, feature_pre_pipeline, pre_solver, selector)
 
-        schedules = dict([ (instance, sorted(pre_schedule + schedule, key=lambda x: x[1])) for instance, (pre_schedule, schedule) in separated_schedules.items()])
+        schedules = dict([ (instance, pre_schedule + schedule) for instance, (pre_schedule, schedule) in separated_schedules.items()])
 
         val = Validator()
         if scenario.performance_type[0] == "runtime":
