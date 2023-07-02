@@ -154,10 +154,13 @@ class Aspeed(object):
         ctl.add(data_in)
         ctl.ground()
         time_prestart = datetime.now()
-        try:
-            func_timeout.func_timeout(self.cutoff, ctl.solve, kwargs=dict(on_model= modelCall))
-        except func_timeout.FunctionTimedOut:
-            self.logger.info("Terminated aspeed after timeout")
+        with ctl.solve(on_model=modelCall, async_=True) as hnd:
+                if hnd.wait(self.cutoff):
+                    self.logger.info("Aspeed fully solved.")
+                    hnd.get()
+                else:
+                    self.logger.info("Aspeed forcefully terminated.")
+                    hnd.cancel()
         #TODO implement timeout
         time_poststart = datetime.now()
         delta_time = time_poststart - time_prestart
