@@ -12,7 +12,7 @@ from ConfigSpace.configuration_space import Configuration, \
 from ConfigSpace.hyperparameters import CategoricalHyperparameter, \
     UniformFloatHyperparameter, UniformIntegerHyperparameter
 # from smac.stats.stats import Stats as AC_Stats
-from smac import AlgorithmConfigurationFacade
+from smac import HyperparameterOptimizationFacade
 # SMAC3
 from smac.scenario import Scenario
 
@@ -539,7 +539,7 @@ class AutoFolio(object):
             ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         # smac = SMAC(scenario=ac_scenario, tae_runner=taf,
         #            rng=np.random.RandomState(seed))
-        smac = AlgorithmConfigurationFacade(scenario=ac_scenario, target_function=taf)
+        smac = HyperparameterOptimizationFacade(scenario=ac_scenario, target_function=taf)
 
         incumbent = smac.optimize()
 
@@ -878,7 +878,8 @@ class AutoFolio(object):
             return dict(
                 (inst, (pre_solving_schedule.get(inst, []), schedule)) for inst, schedule in pred_schedules.items())
         else:
-            return pred_schedules
+            return dict(
+                (inst, ([], schedule)) for inst, schedule in pred_schedules.items())
 
 
 def main():
