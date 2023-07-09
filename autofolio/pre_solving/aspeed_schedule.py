@@ -6,6 +6,7 @@ from datetime import datetime
 
 import func_timeout
 import numpy as np
+import psutil
 from ConfigSpace import CategoricalHyperparameter, UniformIntegerHyperparameter
 from ConfigSpace import Configuration
 from ConfigSpace import ConfigurationSpace
@@ -145,7 +146,8 @@ class Aspeed(object):
         def modelCall(model):
             self.handleOutput(model, algorithms)
 
-        ctl = Control(arguments=["-t 15"]) #run with 15 cores max
+        core_number = len(psutil.Process().cpu_affinity()) - 1 #run with n-1 cores max
+        ctl = Control(arguments=["-t %d"%core_number])
         enable_python()
         #TODO limit runtimee
 

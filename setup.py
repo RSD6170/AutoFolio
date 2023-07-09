@@ -27,7 +27,8 @@ setup(
         'smac',
         'clingo',
         'func_timeout',
-        'liac-arff'
+        'liac-arff',
+        'psutil'
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",

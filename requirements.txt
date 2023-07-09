@@ -11,3 +11,4 @@ smac
 clingo
 func_timeout
 liac-arff
+psutil
