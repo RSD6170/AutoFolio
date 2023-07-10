@@ -1,6 +1,8 @@
 import logging
+from concurrent import futures
 
 import numpy as np
+import psutil
 from ConfigSpace import Configuration
 from ConfigSpace import ConfigurationSpace
 from ConfigSpace import InCondition
@@ -29,7 +31,7 @@ class PairwiseRegression(object):
         '''
             Constructor
         '''
-        self.regressors = []
+        self.regressors = {}
         self.logger = logging.getLogger("PairwiseRegressor")
         self.regressor_class = regressor_class
 
@@ -51,14 +53,18 @@ class PairwiseRegression(object):
 
         n_algos = len(scenario.algorithms)
         X = scenario.feature_data.values
-        for i in range(n_algos):
-            for j in range(i + 1, n_algos):
-                y_i = scenario.performance_data[scenario.algorithms[i]].values
-                y_j = scenario.performance_data[scenario.algorithms[j]].values
-                y = y_i - y_j
-                reg = self.regressor_class()
-                reg.fit(X, y, config)
-                self.regressors.append(reg)
+
+        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
+            fs = {e.submit(self.fit_instance, self.regressor_class, config, X, scenario.performance_data[scenario.algorithms[i]].values, scenario.performance_data[scenario.algorithms[j]].values): (i,j) for i in range(n_algos) for j in range(i+1, n_algos)}
+            for f in futures.as_completed(fs):
+                self.regressors[fs[f]] = f.result()
+
+    @staticmethod
+    def fit_instance(regressor_class, config, X, y_i, y_j):
+        y = y_i - y_j
+        reg = regressor_class(1)
+        reg.fit(X, y, config)
+        return reg
 
     def predict(self, scenario: ASlibScenario):
         '''
@@ -83,14 +89,14 @@ class PairwiseRegression(object):
         n_algos = len(scenario.algorithms)
         X = scenario.feature_data.values
         scores = np.zeros((X.shape[0], n_algos))
-        reg_indx = 0
-        for i in range(n_algos):
-            for j in range(i + 1, n_algos):
-                reg = self.regressors[reg_indx]
-                Y = reg.predict(X)
+
+        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
+            fs = {e.submit(self.predict_instance, self.regressors[(i,j)], X): (i,j) for i in range(n_algos) for j in range(i + 1, n_algos)}
+            for f in futures.as_completed(fs):
+                i,j = fs[f]
+                Y = f.result()
                 scores[:, i] += Y
                 scores[:, j] += -1 * Y
-                reg_indx += 1
 
         # self.logger.debug(
         #   sorted(list(zip(scenario.algorithms, scores)), key=lambda x: x[1], reverse=True))
@@ -100,6 +106,10 @@ class PairwiseRegression(object):
                          zip([(scenario.algorithms[i], cutoff + 1) for i in algo_indx], scenario.feature_data.index))
         # self.logger.debug(schedules)
         return schedules
+
+    @staticmethod
+    def predict_instance(reg, X):
+        return reg.predict(X)
 
     def get_attributes(self):
         '''

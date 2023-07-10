@@ -1,6 +1,8 @@
 import logging
+from concurrent import futures
 
 import numpy as np
+import psutil
 from ConfigSpace import Configuration
 from ConfigSpace import ConfigurationSpace
 from ConfigSpace import InCondition
@@ -30,7 +32,7 @@ class PairwiseClassifier(object):
         '''
             Constructor
         '''
-        self.classifiers = []
+        self.classifiers = {}
         self.logger = logging.getLogger("PairwiseClassifier")
         self.classifier_class = classifier_class
         self.normalizer = MinMaxScaler()
@@ -59,15 +61,20 @@ class PairwiseClassifier(object):
         # are not converted to inf or -inf
         # X = (X - np.min(X)) / (np.max(X) - np.min(X))
         X = self.normalizer.fit_transform(X)
-        for i in range(n_algos):
-            for j in range(i + 1, n_algos):
-                y_i = scenario.performance_data[scenario.algorithms[i]].values
-                y_j = scenario.performance_data[scenario.algorithms[j]].values
-                y = y_i < y_j
-                weights = np.abs(y_i - y_j)
-                clf = self.classifier_class()
-                clf.fit(X, y, config, weights)
-                self.classifiers.append(clf)
+
+
+        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
+            fs = {e.submit(self.fit_instance, self.classifier_class, config, X, scenario.performance_data[scenario.algorithms[i]].values, scenario.performance_data[scenario.algorithms[j]].values): (i,j) for i in range(n_algos) for j in range(i+1, n_algos)}
+            for f in futures.as_completed(fs):
+                self.classifiers[fs[f]] = f.result()
+
+    @staticmethod
+    def fit_instance(classifier_class, config, X, y_i, y_j):
+        y = y_i < y_j
+        weights = np.abs(y_i - y_j)
+        clf = classifier_class(1)
+        clf.fit(X, y, config, weights)
+        return clf
 
     def predict(self, scenario: ASlibScenario):
         '''
@@ -93,14 +100,14 @@ class PairwiseClassifier(object):
         X = scenario.feature_data.values
         X = self.normalizer.transform(X)
         scores = np.zeros((X.shape[0], n_algos))
-        clf_indx = 0
-        for i in range(n_algos):
-            for j in range(i + 1, n_algos):
-                clf = self.classifiers[clf_indx]
-                Y = clf.predict(X)
+
+        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
+            fs = {e.submit(self.predict_instance, self.classifiers[(i,j)], X): (i,j) for i in range(n_algos) for j in range(i + 1, n_algos)}
+            for f in futures.as_completed(fs):
+                i,j = fs[f]
+                Y = f.result()
                 scores[Y == 1, i] += 1
                 scores[Y == 0, j] += 1
-                clf_indx += 1
 
         # self.logger.debug(
         #   sorted(list(zip(scenario.algorithms, scores)), key=lambda x: x[1], reverse=True))
@@ -110,6 +117,9 @@ class PairwiseClassifier(object):
                          zip([(scenario.algorithms[i], cutoff + 1) for i in algo_indx], scenario.feature_data.index))
         # self.logger.debug(schedules)
         return schedules
+    @staticmethod
+    def predict_instance(clf, X):
+        return clf.predict(X)
 
     def get_attributes(self):
         '''

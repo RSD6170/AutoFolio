@@ -1,4 +1,5 @@
 import numpy as np
+import psutil
 import xgboost as xgb
 from ConfigSpace import Configuration
 from ConfigSpace import ConfigurationSpace
@@ -9,7 +10,7 @@ __author__ = "Marius Lindauer"
 __license__ = "BSD"
 
 
-class XGBoost(object):
+class XGBoost:
 
     @staticmethod
     def add_params(cs: ConfigurationSpace):
@@ -92,12 +93,13 @@ class XGBoost(object):
         except:
             return
 
-    def __init__(self):
+    def __init__(self, jobs=len(psutil.Process().cpu_affinity())):
         '''
             Constructor
         '''
 
         self.model = None
+        self.jobs = jobs
         self.attr = []
 
     def __str__(self):
@@ -120,7 +122,7 @@ class XGBoost(object):
 
         '''
 
-        xgb_config = {'nthread': -1, # multi-threading
+        xgb_config = {'nthread': self.jobs, # multi-threading
                       'silent': 1,
                       'objective': 'binary:logistic',
                       'seed': 12345}

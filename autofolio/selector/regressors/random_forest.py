@@ -1,3 +1,4 @@
+import psutil
 import sklearn.ensemble
 from ConfigSpace import CategoricalHyperparameter, \
     UniformIntegerHyperparameter
@@ -9,7 +10,7 @@ __author__ = "Marius Lindauer"
 __license__ = "BSD"
 
 
-class RandomForestRegressor(object):
+class RandomForestRegressor:
 
     @staticmethod
     def add_params(cs: ConfigurationSpace):
@@ -63,12 +64,13 @@ class RandomForestRegressor(object):
         except:
             return
 
-    def __init__(self):
+    def __init__(self, jobs=len(psutil.Process().cpu_affinity())):
         '''
             Constructor
         '''
 
         self.model = None
+        self.jobs = jobs
 
     def __str__(self):
         return "RandomForestRegressor"
@@ -101,7 +103,7 @@ class RandomForestRegressor(object):
                                                                 "rfreg:min_samples_leaf"],
                                                             bootstrap=config["rfreg:bootstrap"],
                                                             random_state=12345,
-                                                            n_jobs=-1) # multi-threading
+                                                            n_jobs=self.jobs) # multi-threading
         self.model.fit(X, y)
 
     def predict(self, X):
