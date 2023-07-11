@@ -2,10 +2,12 @@ import logging
 import pickle
 import random
 import traceback
+from concurrent import futures
 from itertools import tee
 
 import numpy as np
 import pandas as pd
+import psutil
 import yaml
 from ConfigSpace.configuration_space import Configuration, \
     ConfigurationSpace
@@ -568,12 +570,11 @@ class AutoFolio(object):
                 cv_stat = Stats(runtime_cutoff=scenario.algorithm_cutoff_time)
             else:
                 cv_stat = Stats(runtime_cutoff=0)
-            for i in range(1, folds + 1):
-                self.logger.info("CV-Iteration: %d" % (i))
-                stats = self.run_fold(config=config,
-                                      scenario=scenario,
-                                      fold=i)
-                cv_stat.merge(stat=stats)
+
+            with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
+                fs = [e.submit(self.run_fold, config=config, scenario=scenario, fold=i)for i in range(1, folds+1)]
+                for f in futures.as_completed(fs):
+                    cv_stat.merge(f.result())
 
             self.logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
             self.logger.info("CV Stats")
