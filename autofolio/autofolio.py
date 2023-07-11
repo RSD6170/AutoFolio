@@ -642,7 +642,7 @@ class AutoFolio(object):
         val = Validator()
         if scenario.performance_type[0] == "runtime":
             stats = val.validate_runtime(
-                schedules=schedules, test_scenario=test_scenario, train_scenario=training_scenario)
+                schedules=separated_schedules, test_scenario=test_scenario, train_scenario=training_scenario)
         elif scenario.performance_type[0] == "solution_quality":
             stats = val.validate_quality(
                 schedules=schedules, test_scenario=test_scenario, train_scenario=training_scenario)

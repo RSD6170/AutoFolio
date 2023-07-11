@@ -1,5 +1,6 @@
 import logging
 import sys
+from enum import Flag, auto
 
 from autofolio.aslib.aslib_scenario import ASlibScenario
 
@@ -130,6 +131,11 @@ class Stats(object):
         for algo, n in stat.selection_freq.items():
             self.selection_freq[algo] = self.selection_freq.get(algo, 0) + n
 
+class StatusEnum(Flag):
+    Solved = auto()
+    PreSolved = auto()
+    Timeouted = auto()
+
 
 class Validator(object):
 
@@ -175,46 +181,24 @@ class Validator(object):
         unsolvable = ok_status.sum(axis=1) == 0
         stat.unsolvable += unsolvable.sum()
 
-        for inst, schedule in schedules.items():
+        for inst, (pre_schedule, schedule) in schedules.items():
             self.logger.debug("Validate %s on %s" % (schedule, inst))
-            used_time = 0
-            if feature_times:
-                used_time += f_times[inst]
-                self.logger.debug("Used Feature time: %f" % (used_time))
 
-            presolved = False
-            for fg in test_scenario.used_feature_groups:
-                if "presolved" in feature_stati[fg][inst]:
-                    presolved = True
-                    break
 
-            if presolved and used_time < test_scenario.algorithm_cutoff_time:
-                stat.par1 += used_time
+            (schedule_status, schedule_time) = self.evaluate_schedule(f_times, feature_stati, feature_times, inst, schedule, stat, test_scenario)
+            (pre_status, pre_time) = self.evaluate_preschedule(inst, pre_schedule, stat, test_scenario)
+
+            if bool( pre_status & StatusEnum.Solved):
+                stat.par1 += min(schedule_time, pre_time)
+            else:
+                stat.par1 += schedule_time
+
+            if bool( (schedule_status | pre_status) & StatusEnum.Solved):
                 stat.solved += 1
+            if bool( (schedule_status | pre_status) & StatusEnum.PreSolved):
                 stat.presolved_feats += 1
-                self.logger.debug("Presolved during feature computation")
-                continue
-            elif presolved and used_time >= test_scenario.algorithm_cutoff_time:
-                stat.par1 += test_scenario.algorithm_cutoff_time
+            if bool( (schedule_status & pre_status) & StatusEnum.Timeouted):
                 stat.timeouts += 1
-                continue
-
-            for algo, budget in schedule:
-                stat.selection_freq[algo] = stat.selection_freq.get(algo, 0) + 1
-                time = test_scenario.performance_data[algo][inst]
-                used_time += min(time, budget)
-                if time <= budget and used_time <= test_scenario.algorithm_cutoff_time and \
-                        test_scenario.runstatus_data[algo][inst] == "ok":
-                    stat.par1 += used_time
-                    stat.solved += 1
-                    self.logger.debug("Solved by %s (budget: %f -- required to solve: %f)" % (algo, budget, time))
-                    break
-
-                if used_time >= test_scenario.algorithm_cutoff_time:
-                    stat.par1 += test_scenario.algorithm_cutoff_time
-                    stat.timeouts += 1
-                    self.logger.debug("Timeout after %d" % (used_time))
-                    break
 
         stat.par10 = stat.par1 + 9 * \
                      test_scenario.algorithm_cutoff_time * stat.timeouts
@@ -222,6 +206,57 @@ class Validator(object):
         stat.show()
 
         return stat
+
+    def evaluate_preschedule(self, inst, pre_schedule, stat, test_scenario):
+        used_time = 0
+        for algo, budget in pre_schedule:
+            stat.selection_freq[algo] = stat.selection_freq.get(algo, 0) + 1
+            time = test_scenario.performance_data[algo][inst]
+            used_time += min(time, budget)
+            if time <= budget and used_time <= test_scenario.algorithm_cutoff_time and \
+                    test_scenario.runstatus_data[algo][inst] == "ok":
+                self.logger.debug("Solved by %s (budget: %f -- required to solve: %f)" % (algo, budget, time))
+                return StatusEnum.Solved, used_time
+
+            if used_time >= test_scenario.algorithm_cutoff_time:
+                self.logger.debug("Timeout after %d" % (used_time))
+                return StatusEnum.Timeouted, test_scenario.algorithm_cutoff_time
+        return StatusEnum.Timeouted, used_time
+
+    def evaluate_schedule(self, f_times, feature_stati, feature_times, inst, schedule, stat, test_scenario):
+        used_time = 0
+        if feature_times:
+            used_time += f_times[inst]
+            self.logger.debug("Used Feature time: %f" % (used_time))
+
+        presolved = False
+        for fg in test_scenario.used_feature_groups:
+            if "presolved" in feature_stati[fg][inst]:
+                presolved = True
+                break
+
+
+        if presolved and used_time < test_scenario.algorithm_cutoff_time:
+            self.logger.debug("Presolved during feature computation")
+            return StatusEnum.Solved | StatusEnum.PreSolved, used_time
+
+        elif presolved and used_time >= test_scenario.algorithm_cutoff_time:
+            return StatusEnum.Timeouted, test_scenario.algorithm_cutoff_time
+
+        else:
+            for algo, budget in schedule:
+                stat.selection_freq[algo] = stat.selection_freq.get(algo, 0) + 1
+                time = test_scenario.performance_data[algo][inst]
+                used_time += min(time, budget)
+                if time <= budget and used_time <= test_scenario.algorithm_cutoff_time and \
+                        test_scenario.runstatus_data[algo][inst] == "ok":
+                    self.logger.debug("Solved by %s (budget: %f -- required to solve: %f)" % (algo, budget, time))
+                    return StatusEnum.Solved, used_time
+
+                if used_time >= test_scenario.algorithm_cutoff_time:
+                    self.logger.debug("Timeout after %d" % (used_time))
+                    return StatusEnum.Timeouted, test_scenario.algorithm_cutoff_time
+            return None, used_time
 
     def validate_quality(self, schedules: dict, test_scenario: ASlibScenario,
                          train_scenario: ASlibScenario = None):
