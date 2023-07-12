@@ -571,10 +571,9 @@ class AutoFolio(object):
             else:
                 cv_stat = Stats(runtime_cutoff=0)
 
-            with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
-                fs = [e.submit(self.run_fold, config=config, scenario=scenario, fold=i)for i in range(1, folds+1)]
-                for f in futures.as_completed(fs):
-                    cv_stat.merge(f.result())
+            for i in range(1, folds+1):
+                stats_run = self.run_fold(config=config, scenario=scenario, fold=i)
+                cv_stat.merge(stats_run)
 
             self.logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
             self.logger.info("CV Stats")
