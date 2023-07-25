@@ -101,6 +101,7 @@ class XGBoost:
         self.model = None
         self.jobs = jobs
         self.attr = []
+        xgb.set_config(verbosity=0)
 
     def __str__(self):
         return "XGBoost"

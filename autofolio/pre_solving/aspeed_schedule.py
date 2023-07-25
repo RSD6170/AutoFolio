@@ -129,7 +129,6 @@ class Aspeed(object):
             budget = slice.arguments[2].number
             schedule_dict[algo] = budget
         self.schedule = sorted(schedule_dict.items(), key=lambda x: x[1])
-        print(self.schedule)
 
     def _call_clingo(self, data_in: str, algorithms: list):
         '''
