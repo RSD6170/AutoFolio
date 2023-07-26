@@ -64,7 +64,7 @@ class RandomForestRegressor:
         except:
             return
 
-    def __init__(self, jobs=len(psutil.Process().cpu_affinity())):
+    def __init__(self, jobs=1):
         '''
             Constructor
         '''

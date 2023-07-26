@@ -29,7 +29,7 @@ class JointRegression(object):
         '''
             Constructor
         '''
-        self.regressors = None
+        self.regressors = []
         self.logger = logging.getLogger("JointRegressor")
         self.regressor_class = regressor_class
 

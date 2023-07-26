@@ -1,8 +1,6 @@
 import logging
-from concurrent import futures
 
 import numpy as np
-import psutil
 from ConfigSpace import Configuration
 from ConfigSpace import ConfigurationSpace
 from ConfigSpace import InCondition
@@ -54,19 +52,11 @@ class IndRegression(object):
         n_algos = len(scenario.algorithms)
         X = scenario.feature_data.values
 
-        regressor_tmp = [None] * n_algos
-
-        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
-            fs = {e.submit(self.fit_instance, self.regressor_class, config, X, scenario.performance_data[scenario.algorithms[i]].values): i for i in range(n_algos)}
-            for f in futures.as_completed(fs):
-                regressor_tmp[fs[f]] = f.result()
-            self.regressors = regressor_tmp
-
-    @staticmethod
-    def fit_instance(regressor_class, config: Configuration, x, y):
-        reg = regressor_class(1)
-        reg.fit(x, y, config)
-        return reg
+        for i in range(n_algos):
+            y = scenario.performance_data[scenario.algorithms[i]].values
+            reg = self.regressor_class()
+            reg.fit(X, y, config)
+            self.regressors.append(reg)
 
     def predict(self, scenario: ASlibScenario):
         '''
@@ -91,11 +81,10 @@ class IndRegression(object):
         n_algos = len(scenario.algorithms)
         X = scenario.feature_data.values
         scores = np.zeros((X.shape[0], n_algos))
-
-        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
-            fs = {e.submit(self.predict_instance, self.regressors[i], X): i for i in range(n_algos)}
-            for f in futures.as_completed(fs):
-                scores[:, fs[f]] += f.result()
+        for i in range(n_algos):
+            reg = self.regressors[i]
+            Y = reg.predict(X)
+            scores[:, i] += Y
 
         # self.logger.debug(
         #   sorted(list(zip(scenario.algorithms, scores)), key=lambda x: x[1], reverse=True))
@@ -105,10 +94,6 @@ class IndRegression(object):
                          zip([(scenario.algorithms[i], cutoff + 1) for i in algo_indx], scenario.feature_data.index))
         # self.logger.debug(schedules)
         return schedules
-
-    @staticmethod
-    def predict_instance(reg, x):
-        return reg.predict(x)
 
     def get_attributes(self):
         '''
