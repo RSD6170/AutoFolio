@@ -22,6 +22,7 @@ class Stats(object):
         self.par10 = 0.0
         self.timeouts = 0
         self.solved = 0
+        self.presolve_schedule_solved = 0
         self.unsolvable = 0
         self.presolved_feats = 0
         self.oracle = 0
@@ -82,6 +83,7 @@ class Stats(object):
             self.logger.info("Timeouts: %d / %d" % (timeouts, n_samples))
             self.logger.info("Presolved during feature computation: %d / %d" % (self.presolved_feats, n_samples))
             self.logger.info("Solved: %d / %d" % (self.solved, n_samples))
+            self.logger.info("Solved in pre-schedule: %d / %d" %(self.presolve_schedule_solved, self.solved))
             self.logger.info("Unsolvable (%s): %d / %d" %
                              (rm_string, self.unsolvable, n_samples + self.unsolvable))
         else:
@@ -123,6 +125,7 @@ class Stats(object):
         self.par10 += stat.par10
         self.timeouts += stat.timeouts
         self.solved += stat.solved
+        self.presolve_schedule_solved += stat.presolve_schedule_solved
         self.unsolvable += stat.unsolvable
         self.presolved_feats += stat.presolved_feats
         self.oracle += stat.oracle
@@ -134,6 +137,7 @@ class Stats(object):
 class StatusEnum(Flag):
     Solved = auto()
     PreSolved = auto()
+    PreScheduleSolved = auto()
     Timeouted = auto()
 
 
@@ -190,6 +194,8 @@ class Validator(object):
 
             if bool( pre_status & StatusEnum.Solved):
                 stat.par1 += min(schedule_time, pre_time)
+                if(pre_time < schedule_time):
+                    stat.presolve_schedule_solved += 1
             else:
                 stat.par1 += schedule_time
 
