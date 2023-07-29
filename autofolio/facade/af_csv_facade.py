@@ -55,7 +55,7 @@ class AFCsvFacade(object):
         self.logger.info("AutoFolio model saved to %s" % (save_fn))
 
     def tune(self,
-             wallclock_limit: int = 1200,
+             wallclock_limit: int = np.inf,
              runcount_limit: int = np.inf,
              ):
 

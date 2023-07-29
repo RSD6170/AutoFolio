@@ -514,9 +514,6 @@ class AutoFolio(object):
                                instances=[str(i) for i in range(1, max_fold + 1)],
                                instance_features=dict([(str(i), [i]) for i in range(1, max_fold + 1)]),
                                walltime_limit=wallclock_limit,
-                               output_directory="" if not autofolio_config.get("output-dir",
-                                                                               None) else autofolio_config.get(
-                                   "output-dir"),
                                n_trials=runcount_limit,
                                seed=seed
                                )
