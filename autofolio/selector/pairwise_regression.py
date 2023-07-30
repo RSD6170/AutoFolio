@@ -22,10 +22,8 @@ class PairwiseRegression(object):
         '''
 
         selector = cs.get_hyperparameter("selector")
-        regressor = cs.get_hyperparameter("regressor")
         if "PairwiseRegressor" in selector.choices:
-            cond = InCondition(child=regressor, parent=selector, values=["PairwiseRegressor"])
-            cs.add_condition(cond)
+            return ("regressor", "PairwiseRegressor")
 
     def __init__(self, regressor_class):
         '''

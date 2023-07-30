@@ -21,10 +21,8 @@ class MultiClassifier(object):
         '''
 
         selector = cs.get_hyperparameter("selector")
-        classifier = cs.get_hyperparameter("classifier")
         if "MultiClassifier" in selector.choices:
-            cond = InCondition(child=classifier, parent=selector, values=["MultiClassifier"])
-            cs.add_condition(cond)
+            return ("classifier", "MultiClassifier")
 
     def __init__(self, classifier_class):
         '''

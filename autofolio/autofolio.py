@@ -4,6 +4,7 @@ import random
 import traceback
 from concurrent import futures
 from itertools import tee
+from collections import defaultdict
 
 import numpy as np
 import pandas as pd
@@ -13,6 +14,7 @@ from ConfigSpace.configuration_space import Configuration, \
     ConfigurationSpace
 from ConfigSpace.hyperparameters import CategoricalHyperparameter, \
     UniformFloatHyperparameter, UniformIntegerHyperparameter
+from ConfigSpace.conditions import InCondition
 # from smac.stats.stats import Stats as AC_Stats
 from smac import HyperparameterOptimizationFacade
 # SMAC3
@@ -421,15 +423,20 @@ class AutoFolio(object):
             sel_choices = [autofolio_config["selector"]]
             sel_def = autofolio_config["selector"]
         else:
-            sel_choices = ["PairwiseClassifier", "PairwiseRegressor"]
+            sel_choices = ["PairwiseClassifier", "PairwiseRegressor", "MultiClassifier", "IndRegressor", "JointRegressor"] #modify List for removing parts
             sel_def = "PairwiseClassifier"
 
         selector = CategoricalHyperparameter(
             "selector", choices=sel_choices, default_value=sel_def)
         self.cs.add_hyperparameter(selector)
-        PairwiseClassifier.add_params(self.cs)
-        PairwiseRegression.add_params(self.cs)
-
+        constraintlist = [IndRegression.add_params(self.cs), JointRegression.add_params(self.cs),
+                          MultiClassifier.add_params(self.cs), PairwiseClassifier.add_params(self.cs),
+                          PairwiseRegression.add_params(self.cs)] #add when new Selectors added
+        constraintdict = defaultdict(list)
+        for (child, value) in constraintlist:
+            constraintdict[child].append(value)
+        for (child, value) in constraintdict.items():
+            self.cs.add_condition(InCondition(child=self.cs.get_hyperparameter(child), parent=selector, values=value))
         self.logger.debug(self.cs)
 
         return self.cs

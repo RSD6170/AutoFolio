@@ -23,10 +23,8 @@ class PairwiseClassifier(object):
         '''
 
         selector = cs.get_hyperparameter("selector")
-        classifier = cs.get_hyperparameter("classifier")
         if "PairwiseClassifier" in selector.choices:
-            cond = InCondition(child=classifier, parent=selector, values=["PairwiseClassifier"])
-            cs.add_condition(cond)
+            return ("classifier", "PairwiseClassifier")
 
     def __init__(self, classifier_class):
         '''
