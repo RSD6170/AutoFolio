@@ -23,7 +23,9 @@ class IndRegression(object):
 
         selector = cs.get_hyperparameter("selector")
         if "IndRegressor" in selector.choices:
-            return ("regressor", "IndRegressor")
+            return "regressor", "IndRegressor"
+        else:
+            return None, None
 
     def __init__(self, regressor_class):
         '''

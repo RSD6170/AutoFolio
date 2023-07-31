@@ -21,7 +21,9 @@ class JointRegression(object):
 
         selector = cs.get_hyperparameter("selector")
         if "JointRegressor" in selector.choices:
-            return ("regressor", "JointRegressor")
+            return "regressor", "JointRegressor"
+        else:
+            return None, None
 
     def __init__(self, regressor_class):
         '''

@@ -434,7 +434,8 @@ class AutoFolio(object):
                           PairwiseRegression.add_params(self.cs)] #add when new Selectors added
         constraintdict = defaultdict(list)
         for (child, value) in constraintlist:
-            constraintdict[child].append(value)
+            if child is not None:
+                constraintdict[child].append(value)
         for (child, value) in constraintdict.items():
             self.cs.add_condition(InCondition(child=self.cs.get_hyperparameter(child), parent=selector, values=value))
         self.logger.debug(self.cs)

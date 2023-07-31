@@ -22,7 +22,9 @@ class MultiClassifier(object):
 
         selector = cs.get_hyperparameter("selector")
         if "MultiClassifier" in selector.choices:
-            return ("classifier", "MultiClassifier")
+            return "classifier", "MultiClassifier"
+        else:
+            return None, None
 
     def __init__(self, classifier_class):
         '''

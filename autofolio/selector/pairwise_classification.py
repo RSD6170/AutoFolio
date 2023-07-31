@@ -24,7 +24,9 @@ class PairwiseClassifier(object):
 
         selector = cs.get_hyperparameter("selector")
         if "PairwiseClassifier" in selector.choices:
-            return ("classifier", "PairwiseClassifier")
+            return "classifier", "PairwiseClassifier"
+        else:
+            return None, None
 
     def __init__(self, classifier_class):
         '''
