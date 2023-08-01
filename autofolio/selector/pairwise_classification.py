@@ -36,6 +36,7 @@ class PairwiseClassifier(object):
         self.logger = logging.getLogger("PairwiseClassifier")
         self.classifier_class = classifier_class
         self.normalizer = MinMaxScaler()
+        self.isXGBoost = False
 
     def fit(self, scenario: ASlibScenario, config: Configuration):
         '''
@@ -62,17 +63,22 @@ class PairwiseClassifier(object):
         # X = (X - np.min(X)) / (np.max(X) - np.min(X))
         X = self.normalizer.fit_transform(X)
 
-
-        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
-            fs = {e.submit(self.fit_instance, self.classifier_class, config, X, scenario.performance_data[scenario.algorithms[i]].values, scenario.performance_data[scenario.algorithms[j]].values): (i,j) for i in range(n_algos) for j in range(i+1, n_algos)}
-            for f in futures.as_completed(fs):
-                self.classifiers[fs[f]] = f.result()
+        if config.get("classifier") == "XGBoost":
+            self.isXGBoost = True
+            for i in range(n_algos):
+                for j in range(i + 1, n_algos):
+                    self.classifiers[(i,j)] = self.fit_instance(self.classifier_class, config, X, scenario.performance_data[scenario.algorithms[i]].values, scenario.performance_data[scenario.algorithms[j]].values)
+        else:
+            with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
+                fs = {e.submit(self.fit_instance, self.classifier_class, config, X, scenario.performance_data[scenario.algorithms[i]].values, scenario.performance_data[scenario.algorithms[j]].values, 1): (i,j) for i in range(n_algos) for j in range(i+1, n_algos)}
+                for f in futures.as_completed(fs):
+                    self.classifiers[fs[f]] = f.result()
 
     @staticmethod
-    def fit_instance(classifier_class, config, X, y_i, y_j):
+    def fit_instance(classifier_class, config, X, y_i, y_j, jobs=len(psutil.Process().cpu_affinity())):
         y = y_i < y_j
         weights = np.abs(y_i - y_j)
-        clf = classifier_class(1)
+        clf = classifier_class(jobs)
         clf.fit(X, y, config, weights)
         return clf
 
@@ -101,13 +107,20 @@ class PairwiseClassifier(object):
         X = self.normalizer.transform(X)
         scores = np.zeros((X.shape[0], n_algos))
 
-        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
-            fs = {e.submit(self.predict_instance, self.classifiers[(i,j)], X): (i,j) for i in range(n_algos) for j in range(i + 1, n_algos)}
-            for f in futures.as_completed(fs):
-                i,j = fs[f]
-                Y = f.result()
-                scores[Y == 1, i] += 1
-                scores[Y == 0, j] += 1
+        if self.isXGBoost:
+            for i in range(n_algos):
+                for j in range(i + 1, n_algos):
+                    Y = self.predict_instance(self.classifiers[(i,j)], X)
+                    scores[Y == 1, i] += 1
+                    scores[Y == 0, j] += 1
+        else:
+            with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
+                fs = {e.submit(self.predict_instance, self.classifiers[(i,j)], X): (i,j) for i in range(n_algos) for j in range(i + 1, n_algos)}
+                for f in futures.as_completed(fs):
+                    i,j = fs[f]
+                    Y = f.result()
+                    scores[Y == 1, i] += 1
+                    scores[Y == 0, j] += 1
 
         # self.logger.debug(
         #   sorted(list(zip(scenario.algorithms, scores)), key=lambda x: x[1], reverse=True))
