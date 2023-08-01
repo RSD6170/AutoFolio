@@ -133,8 +133,7 @@ class XGBoost:
             if param == "xgb:num_round":
                 continue
             xgb_config[param[4:]] = config[param]
-
-        dtrain = xgb.DMatrix(X, label=y, weight=weights)
+        dtrain = xgb.DMatrix(X, label=y, weight=weights, nthread=self.jobs)
         self.model = xgb.train(xgb_config, dtrain, config["xgb:num_round"])
 
     def predict(self, X):
