@@ -91,7 +91,7 @@ def visualize(feature_pre_pipeline, pre_solver, selector):
         traceback.print_exc()
         pass
 
-    dot.render('test-output/autofolio', view=True)
+    dot.render('test-output/autofolio', view=False)
 
 
 def add_attributes(attributes, node_name: str, dot: Digraph):
@@ -139,12 +139,14 @@ def add_attributes(attributes, node_name: str, dot: Digraph):
     # ===========================================================================
 
 
-parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument("--load", type=str, default=None,
-                    help="loads model (from --save); other modes are disabled with this options")
-args = parser.parse_args()
+# parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+# parser.add_argument("--load", type=str, default=None,
+#                     help="loads model (from --save); other modes are disabled with this options")
+# args = parser.parse_args()
 
-scenario, feature_pre_pipeline, pre_solver, selector, config = load_model(args.load)
+file = "SAT20_20h.pkl"
+
+scenario, feature_pre_pipeline, pre_solver, selector, config = load_model(file)
 
 print(config)
 

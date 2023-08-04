@@ -137,11 +137,7 @@ class RandomForest:
             -------
             list of tuples of (attribute,value) 
         '''
-        attr = []
-        attr.append("max_depth = %d" % (self.model.max_depth))
-        attr.append("min_samples_split = %d" % (self.model.min_samples_split))
-        attr.append("min_samples_leaf = %d" % (self.model.min_samples_leaf))
-        attr.append("criterion = %s" % (self.model.criterion))
-        attr.append("n_estimators = %d" % (self.model.n_estimators))
-        attr.append("max_features = %s" % (self.model.max_features))
-        return attr
+        list = []
+        for (k, v) in self.model.get_params(deep=True).items():
+            list.append("{} = {}".format(k, v))
+        return list
