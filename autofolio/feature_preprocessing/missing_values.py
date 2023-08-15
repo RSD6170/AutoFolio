@@ -45,7 +45,7 @@ class ImputerWrapper(object):
                 configuration
         '''
 
-        self.imputer = SimpleImputer(strategy=config.get("imputer_strategy"))
+        self.imputer = SimpleImputer(strategy=config.get("imputer_strategy"), keep_empty_features=True)
         self.imputer.fit(scenario.feature_data.values)
         self.active = True
 
