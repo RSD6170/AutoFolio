@@ -1,0 +1,123 @@
+@RELATION FEATURES_RUNSTATUS
+
+@ATTRIBUTE instance_id STRING
+@ATTRIBUTE repetition NUMERIC
+@ATTRIBUTE Feature-basic {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Feature-constraints {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Feature-tree {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Feature-clause {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Feature-dense {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Feature-core {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Feature-valid {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Feature-cyclo {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-BASE {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-SP {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-DIA {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-CL {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-UNIT {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-LS {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-LOBJOIS {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-LP {ok, timeout, memout, not_applicable, crash, other}
+
+
+@DATA
+mcc2022/MC2022_track1-mc_public/mc2022_track1_001.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_003.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_005.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_007.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_009.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_011.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_013.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_015.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_017.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_019.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_021.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_023.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_025.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_027.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_029.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_031.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_033.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_035.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_037.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_039.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_041.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_043.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_045.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_047.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_049.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_051.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_053.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_055.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_057.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_059.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_061.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_063.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_065.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_067.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_069.dimacs,1,ok,ok,ok,ok,timeout,ok,ok,timeout,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_071.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_073.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_075.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_077.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_079.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_081.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_083.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_085.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_087.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_089.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_091.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_093.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_095.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_097.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_099.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_101.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_103.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_105.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_107.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_109.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_111.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_113.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_115.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_117.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_119.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_121.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_123.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_125.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_127.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_129.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_131.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_133.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_135.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_137.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_139.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_141.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_143.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_145.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_147.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_149.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_151.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_153.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_155.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_157.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_159.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_161.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_163.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_165.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_167.dimacs,1,ok,ok,ok,ok,timeout,timeout,ok,timeout,ok,crash,ok,ok,crash,timeout,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_169.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_171.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_173.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_175.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_177.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_179.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_181.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_183.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,timeout,timeout,timeout,timeout,timeout,timeout,timeout,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_185.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_187.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_189.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_191.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,timeout
+mcc2022/MC2022_track1-mc_public/mc2022_track1_193.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_195.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_197.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+mcc2022/MC2022_track1-mc_public/mc2022_track1_199.dimacs,1,timeout,timeout,timeout,timeout,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,timeout

@@ -1,0 +1,432 @@
+algorithm_cutoff_memory: '?'
+algorithm_cutoff_time: 3600
+algorithms_deterministic: '?'
+algorithms_stochastic: ''
+default_steps:
+- Feature-basic
+- Feature-constraints
+- Feature-tree
+- Feature-clause
+- Feature-dense
+- Feature-core
+- Feature-valid
+- Feature-cyclo
+- Satzilla-BASE
+- Satzilla-SP
+- Satzilla-DIA
+- Satzilla-CL
+- Satzilla-UNIT
+- Satzilla-LS
+- Satzilla-LOBJOIS
+- Satzilla-LP
+
+feature_steps:
+  Feature-basic:
+    provides:
+    - NumberOfFeatures
+    - NumberOfLeafFeatures
+    - NumberOfTopFeatures
+  Feature-constraints:
+    provides:
+    - Number_Constraints
+    - AverageConstraintSize
+    - CtcDensity
+    - FeaturesInConstraintsDensity
+  Feature-tree:
+    provides:
+    - TreeDepth
+    - AverageNumberOfChildren
+  Feature-clause:
+    provides:
+    - NumberOfClauses
+    - NumberOfLiterals
+    - ClauseDensity
+  Feature-dense:
+    provides:
+    - RatioOptionalFeatures
+    - ConnectivityDensity
+  Feature-core:
+    provides:
+    - Void
+    - Number_CORE
+    - Number_Dead
+  Feature-valid:
+    provides:
+    - NumberOfValidConfigurationsLog
+  Feature-cyclo:
+    provides:
+    - SimpleCyclomaticComplexity
+    - IndependentCyclomaticComplexity
+  Satzilla-BASE:
+    provides:
+    - nvarsOrig
+    - nclausesOrig
+    - nvars
+    - nclauses
+    - reducedVars
+    - reducedClauses
+    - Pre-featuretime
+    - vars-clauses-ratio
+    - POSNEG-RATIO-CLAUSE-mean
+    - POSNEG-RATIO-CLAUSE-coeff-variation
+    - POSNEG-RATIO-CLAUSE-min
+    - POSNEG-RATIO-CLAUSE-max
+    - POSNEG-RATIO-CLAUSE-entropy
+    - VCG-CLAUSE-mean
+    - VCG-CLAUSE-coeff-variation
+    - VCG-CLAUSE-min
+    - VCG-CLAUSE-max
+    - VCG-CLAUSE-entropy
+    - UNARY
+    - BINARY+
+    - TRINARY+
+    - Basic-featuretime
+    - VCG-VAR-mean
+    - VCG-VAR-coeff-variation
+    - VCG-VAR-min
+    - VCG-VAR-max
+    - VCG-VAR-entropy
+    - POSNEG-RATIO-VAR-mean
+    - POSNEG-RATIO-VAR-stdev
+    - POSNEG-RATIO-VAR-min
+    - POSNEG-RATIO-VAR-max
+    - POSNEG-RATIO-VAR-entropy
+    - HORNY-VAR-mean
+    - HORNY-VAR-coeff-variation
+    - HORNY-VAR-min
+    - HORNY-VAR-max
+    - HORNY-VAR-entropy
+    - horn-clauses-fraction
+    - VG-mean
+    - VG-coeff-variation
+    - VG-min
+    - VG-max
+    - KLB-featuretime
+    - CG-mean
+    - CG-coeff-variation
+    - CG-min
+    - CG-max
+    - CG-entropy
+    - cluster-coeff-mean
+    - cluster-coeff-coeff-variation
+    - cluster-coeff-min
+    - cluster-coeff-max
+    - cluster-coeff-entropy
+    - CG-featuretime
+  Satzilla-SP:
+    provides:
+    - SP-bias-mean
+    - SP-bias-coeff-variation
+    - SP-bias-min
+    - SP-bias-max
+    - SP-bias-q90
+    - SP-bias-q10
+    - SP-bias-q75
+    - SP-bias-q25
+    - SP-bias-q50
+    - SP-unconstraint-mean
+    - SP-unconstraint-coeff-variation
+    - SP-unconstraint-min
+    - SP-unconstraint-max
+    - SP-unconstraint-q90
+    - SP-unconstraint-q10
+    - SP-unconstraint-q75
+    - SP-unconstraint-q25
+    - SP-unconstraint-q50
+    - sp-featuretime
+  Satzilla-DIA:
+    provides:
+    - DIAMETER-mean
+    - DIAMETER-coeff-variation
+    - DIAMETER-min
+    - DIAMETER-max
+    - DIAMETER-entropy
+    - DIAMETER-featuretime
+  Satzilla-CL:
+    provides:
+    - cl-num-mean
+    - cl-num-coeff-variation
+    - cl-num-min
+    - cl-num-max
+    - cl-num-q90
+    - cl-num-q10
+    - cl-num-q75
+    - cl-num-q25
+    - cl-num-q50
+    - cl-size-mean
+    - cl-size-coeff-variation
+    - cl-size-min
+    - cl-size-max
+    - cl-size-q90
+    - cl-size-q10
+    - cl-size-q75
+    - cl-size-q25
+    - cl-size-q50
+    - cl-featuretime
+  Satzilla-UNIT:
+    provides:
+    - vars-reduced-depth-1
+    - vars-reduced-depth-4
+    - vars-reduced-depth-16
+    - vars-reduced-depth-64
+    - vars-reduced-depth-256
+    - unit-featuretime
+  Satzilla-LS:
+    provides:
+    - saps_BestSolution_Mean
+    - saps_BestSolution_CoeffVariance
+    - saps_FirstLocalMinStep_Mean
+    - saps_FirstLocalMinStep_CoeffVariance
+    - saps_FirstLocalMinStep_Median
+    - saps_FirstLocalMinStep_Q.10
+    - saps_FirstLocalMinStep_Q.90
+    - saps_BestAvgImprovement_Mean
+    - saps_BestAvgImprovement_CoeffVariance
+    - saps_FirstLocalMinRatio_Mean
+    - saps_FirstLocalMinRatio_CoeffVariance
+    - ls-saps-featuretime
+    - gsat_BestSolution_Mean
+    - gsat_BestSolution_CoeffVariance
+    - gsat_FirstLocalMinStep_Mean
+    - gsat_FirstLocalMinStep_CoeffVariance
+    - gsat_FirstLocalMinStep_Median
+    - gsat_FirstLocalMinStep_Q.10
+    - gsat_FirstLocalMinStep_Q.90
+    - gsat_BestAvgImprovement_Mean
+    - gsat_BestAvgImprovement_CoeffVariance
+    - gsat_FirstLocalMinRatio_Mean
+    - gsat_FirstLocalMinRatio_CoeffVariance
+    - ls-gsat-featuretime
+  Satzilla-LOBJOIS:
+    provides:
+    - lobjois-mean-depth-over-vars
+    - lobjois-log-num-nodes-over-vars
+    - lobjois-featuretime
+  Satzilla-LP:
+    provides:
+    - LP_OBJ
+    - LPSLack-mean
+    - LPSLack-coeff-variation
+    - LPSLack-min
+    - LPSLack-max
+    - lpIntRatio
+    - lpTIME
+features_cutoff_memory: '?'
+features_cutoff_time: 60
+features_deterministic:
+- NumberOfFeatures
+- NumberOfLeafFeatures
+- NumberOfTopFeatures
+- Number_Constraints
+- AverageConstraintSize
+- CtcDensity
+- FeaturesInConstraintsDensity
+- TreeDepth
+- AverageNumberOfChildren
+- NumberOfClauses
+- NumberOfLiterals
+- ClauseDensity
+- RatioOptionalFeatures
+- ConnectivityDensity
+- Void
+- Number_CORE
+- Number_Dead
+- NumberOfValidConfigurationsLog
+- SimpleCyclomaticComplexity
+- IndependentCyclomaticComplexity
+- nvarsOrig
+- nclausesOrig
+- nvars
+- nclauses
+- reducedVars
+- reducedClauses
+- Pre-featuretime
+- vars-clauses-ratio
+- POSNEG-RATIO-CLAUSE-mean
+- POSNEG-RATIO-CLAUSE-coeff-variation
+- POSNEG-RATIO-CLAUSE-min
+- POSNEG-RATIO-CLAUSE-max
+- POSNEG-RATIO-CLAUSE-entropy
+- VCG-CLAUSE-mean
+- VCG-CLAUSE-coeff-variation
+- VCG-CLAUSE-min
+- VCG-CLAUSE-max
+- VCG-CLAUSE-entropy
+- UNARY
+- BINARY+
+- TRINARY+
+- Basic-featuretime
+- VCG-VAR-mean
+- VCG-VAR-coeff-variation
+- VCG-VAR-min
+- VCG-VAR-max
+- VCG-VAR-entropy
+- POSNEG-RATIO-VAR-mean
+- POSNEG-RATIO-VAR-stdev
+- POSNEG-RATIO-VAR-min
+- POSNEG-RATIO-VAR-max
+- POSNEG-RATIO-VAR-entropy
+- HORNY-VAR-mean
+- HORNY-VAR-coeff-variation
+- HORNY-VAR-min
+- HORNY-VAR-max
+- HORNY-VAR-entropy
+- horn-clauses-fraction
+- VG-mean
+- VG-coeff-variation
+- VG-min
+- VG-max
+- KLB-featuretime
+- CG-mean
+- CG-coeff-variation
+- CG-min
+- CG-max
+- CG-entropy
+- cluster-coeff-mean
+- cluster-coeff-coeff-variation
+- cluster-coeff-min
+- cluster-coeff-max
+- cluster-coeff-entropy
+- CG-featuretime
+- SP-bias-mean
+- SP-bias-coeff-variation
+- SP-bias-min
+- SP-bias-max
+- SP-bias-q90
+- SP-bias-q10
+- SP-bias-q75
+- SP-bias-q25
+- SP-bias-q50
+- SP-unconstraint-mean
+- SP-unconstraint-coeff-variation
+- SP-unconstraint-min
+- SP-unconstraint-max
+- SP-unconstraint-q90
+- SP-unconstraint-q10
+- SP-unconstraint-q75
+- SP-unconstraint-q25
+- SP-unconstraint-q50
+- sp-featuretime
+- DIAMETER-mean
+- DIAMETER-coeff-variation
+- DIAMETER-min
+- DIAMETER-max
+- DIAMETER-entropy
+- DIAMETER-featuretime
+- cl-num-mean
+- cl-num-coeff-variation
+- cl-num-min
+- cl-num-max
+- cl-num-q90
+- cl-num-q10
+- cl-num-q75
+- cl-num-q25
+- cl-num-q50
+- cl-size-mean
+- cl-size-coeff-variation
+- cl-size-min
+- cl-size-max
+- cl-size-q90
+- cl-size-q10
+- cl-size-q75
+- cl-size-q25
+- cl-size-q50
+- cl-featuretime
+- vars-reduced-depth-1
+- vars-reduced-depth-4
+- vars-reduced-depth-16
+- vars-reduced-depth-64
+- vars-reduced-depth-256
+- unit-featuretime
+- saps_BestSolution_Mean
+- saps_BestSolution_CoeffVariance
+- saps_FirstLocalMinStep_Mean
+- saps_FirstLocalMinStep_CoeffVariance
+- saps_FirstLocalMinStep_Median
+- saps_FirstLocalMinStep_Q.10
+- saps_FirstLocalMinStep_Q.90
+- saps_BestAvgImprovement_Mean
+- saps_BestAvgImprovement_CoeffVariance
+- saps_FirstLocalMinRatio_Mean
+- saps_FirstLocalMinRatio_CoeffVariance
+- ls-saps-featuretime
+- gsat_BestSolution_Mean
+- gsat_BestSolution_CoeffVariance
+- gsat_FirstLocalMinStep_Mean
+- gsat_FirstLocalMinStep_CoeffVariance
+- gsat_FirstLocalMinStep_Median
+- gsat_FirstLocalMinStep_Q.10
+- gsat_FirstLocalMinStep_Q.90
+- gsat_BestAvgImprovement_Mean
+- gsat_BestAvgImprovement_CoeffVariance
+- gsat_FirstLocalMinRatio_Mean
+- gsat_FirstLocalMinRatio_CoeffVariance
+- ls-gsat-featuretime
+- lobjois-mean-depth-over-vars
+- lobjois-log-num-nodes-over-vars
+- lobjois-featuretime
+- LP_OBJ
+- LPSLack-mean
+- LPSLack-coeff-variation
+- LPSLack-min
+- LPSLack-max
+- lpIntRatio
+- lpTIME
+features_stochastic: ''
+maximize:
+- false
+metainfo_algorithms:
+  ExactMC/ExactMC_Arjun.sh:
+    configuration: ''
+    deterministic: 'true'
+  ExactMC/ExactMC_BE.sh:
+    configuration: ''
+    deterministic: 'true'
+  Narsimha-track1v-51fd045537919563586647d/track1_conf1.sh:
+    configuration: ''
+    deterministic: 'true'
+  Narsimha-track1v-51fd045537919d/track1_conf2.sh:
+    configuration: ''
+    deterministic: 'true'
+  Narsimha-track1v-7112ef8eb466e9475/track1_conf1.sh:
+    configuration: ''
+    deterministic: 'true'
+  Narsimha-track1v-7112ef8eb466e9475/track1_conf2.sh:
+    configuration: ''
+    deterministic: 'true'
+  SharpSAT-TD-unweighted/default:
+    configuration: ''
+    deterministic: 'true'
+  TwG/1.sh:
+    configuration: ''
+    deterministic: 'true'
+  TwG/2.sh:
+    configuration: ''
+    deterministic: 'true'
+  c2d/default:
+    configuration: ''
+    deterministic: 'true'
+  d4/default.sh:
+    configuration: ''
+    deterministic: 'true'
+  dpmcpre/1pre1mp0:
+    configuration: ''
+    deterministic: 'true'
+  dpmcpre/1pre1mp1:
+    configuration: ''
+    deterministic: 'true'
+  gpmc/track1:
+    configuration: ''
+    deterministic: 'true'
+  gpmc_r2/track1:
+    configuration: ''
+    deterministic: 'true'
+  mtmc/default:
+    configuration: ''
+    deterministic: 'true'
+number_of_feature_steps: 1
+performance_measures:
+- runtime
+performance_type:
+- runtime
+scenario_id: UNKNOWN
