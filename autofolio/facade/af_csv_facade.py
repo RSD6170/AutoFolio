@@ -69,10 +69,10 @@ class AFCsvFacade(object):
 
     def cross_validation(self, config: Configuration):
         """ run a cross validation on given AutoFolio configuration"""
-        score, cv_stat = -1 * self.af.run_cv(config=config, scenario=self.scenario, folds=int(self.scenario.cv_data.max().max()))
+        score, cv_stat = self.af.run_cv(config=config, scenario=self.scenario, folds=int(self.scenario.cv_data.max().max()))
         self.logger.info("AF's final performance %f" % (score))
 
-        return score, cv_stat
+        return -1*score, cv_stat
 
     #fix by @lteu and @felixvuo
     @staticmethod

@@ -27,10 +27,12 @@ class Stats(object):
         self.presolved_feats = 0
         self.oracle = 0
         self.sbs = 0
+        self.reached_oracle = 0
 
         self.runtime_cutoff = runtime_cutoff
 
         self.selection_freq = {}
+        self.preselection_freq = {}
 
         self.logger = logging.getLogger("Stats")
 
@@ -84,6 +86,7 @@ class Stats(object):
             self.logger.info("Presolved during feature computation: %d / %d" % (self.presolved_feats, n_samples))
             self.logger.info("Solved: %d / %d" % (self.solved, n_samples))
             self.logger.info("Solved in pre-schedule: %d / %d" %(self.presolve_schedule_solved, self.solved))
+            self.logger.info("As good as oracle: %d / %d", self.reached_oracle, self.solved)
             self.logger.info("Unsolvable (%s): %d / %d" %
                              (rm_string, self.unsolvable, n_samples + self.unsolvable))
         else:
@@ -111,6 +114,14 @@ class Stats(object):
                 frequency = n / (timeouts + self.solved)
             self.logger.debug("%s: %.2f" % (algo, frequency))
 
+        self.logger.debug("Preselection Frequency")
+        for algo, n in self.preselection_freq.items():
+            if (timeouts + self.solved) == 0:
+                frequency = 0
+            else:
+                frequency = n / (timeouts + self.solved)
+            self.logger.debug("%s: %.2f" % (algo, frequency))
+
         return par10_out
 
     def merge(self, stat):
@@ -130,9 +141,12 @@ class Stats(object):
         self.presolved_feats += stat.presolved_feats
         self.oracle += stat.oracle
         self.sbs += stat.sbs
+        self.reached_oracle += stat.reached_oracle
 
         for algo, n in stat.selection_freq.items():
             self.selection_freq[algo] = self.selection_freq.get(algo, 0) + n
+        for algo, n in stat.preselection_freq.items():
+            self.preselection_freq[algo] = self.preselection_freq.get(algo, 0) + n
 
 class StatusEnum(Flag):
     Solved = auto()
@@ -199,6 +213,9 @@ class Validator(object):
             else:
                 stat.par1 += schedule_time
 
+            if bool(schedule_status & StatusEnum.Solved) and test_scenario.performance_data.idxmin(axis="columns")[inst] == schedule[0][0]:
+                stat.reached_oracle += 1
+
             if bool( (schedule_status | pre_status) & StatusEnum.Solved):
                 stat.solved += 1
             if bool( (schedule_status | pre_status) & StatusEnum.PreSolved):
@@ -216,7 +233,7 @@ class Validator(object):
     def evaluate_preschedule(self, inst, pre_schedule, stat, test_scenario):
         used_time = 0
         for algo, budget in pre_schedule:
-            stat.selection_freq[algo] = stat.selection_freq.get(algo, 0) + 1
+            stat.preselection_freq[algo] = stat.preselection_freq.get(algo, 0) + 1
             time = test_scenario.performance_data[algo][inst]
             used_time += min(time, budget)
             if time <= budget and used_time <= test_scenario.algorithm_cutoff_time and \
