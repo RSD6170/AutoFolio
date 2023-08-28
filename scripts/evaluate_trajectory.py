@@ -33,7 +33,7 @@ with (open(path_intensifier, "r") as intensifier_file, open(path_runhistory, "r"
         config_dict = runhistory["configs"][str(id)]
 
         config = ConfigSpace.Configuration(af.af.cs, config_dict)
-        values[incumbent["trial"]]=-1 * af.cross_validation(config=config)
+        values[incumbent["trial"]]=-1 * af.cross_validation(config=config)[0]
 
 
 print(values)
@@ -44,3 +44,4 @@ ax.step(values.keys(), values.values(), linewidth=2.5)
 
 
 plt.show()
+#TODO Stats zurückgeben lassen, weitere Infos in Stats einbauen (#Bester Solver, ...), Json exportieren

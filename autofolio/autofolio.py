@@ -150,7 +150,7 @@ class AutoFolio(object):
                 self.run_cv(config=config, scenario=scenario, folds=int(scenario.cv_data.max().max()))
 
             if test_scenario is not None:
-                stats = self.run_fold(config=config,
+                par10, stats = self.run_fold(config=config,
                                       fold=0,
                                       return_fit=False,
                                       scenario=scenario,
@@ -463,7 +463,7 @@ class AutoFolio(object):
         '''
 
         if instance is None:
-            perf = self.run_cv(config=config, scenario=scenario)
+            perf, _ = self.run_cv(config=config, scenario=scenario)
         else:
             try:
                 stats = self.run_fold(config=config, scenario=scenario, fold=int(instance))
@@ -586,11 +586,12 @@ class AutoFolio(object):
         except ValueError:
             traceback.print_exc()
             par10 = scenario.algorithm_cutoff_time * 10
+            cv_stat = None
 
         if scenario.maximize[0]:
             par10 *= -1
 
-        return par10
+        return par10, cv_stat
 
     def run_fold(self, config: Configuration, scenario: ASlibScenario, fold: int, test_scenario=None,
                  return_fit: bool = False):

@@ -21,7 +21,7 @@ af.fit()
 config = af.tune(wallclock_limit=4)
 
 # evaluate configuration using a 10-fold cross validation
-score = af.cross_validation(config=config)
+score, _ = af.cross_validation(config=config)
 
 # re-fit AutoFolio using the (hopefully) better configuration
 # and save model to disk
