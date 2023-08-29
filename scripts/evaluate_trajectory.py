@@ -1,6 +1,7 @@
 import json
 import logging
 import sys
+from collections import Counter
 
 import ConfigSpace
 import numpy as np
@@ -21,6 +22,7 @@ logging.getLogger("Stats").setLevel(logging.INFO)
 af.fit()
 
 values = []
+config_analysis = {}
 with (open(path_intensifier, "r") as intensifier_file, open(path_runhistory, "r") as runhistory_file, open(output_path, "w") as output):
     intensifier = json.load(intensifier_file)
     runhistory = json.load(runhistory_file)
@@ -33,6 +35,15 @@ with (open(path_intensifier, "r") as intensifier_file, open(path_runhistory, "r"
         id = incumbent["config_ids"][0]
         print("Evaluate {}".format(id))
         config_dict = runhistory["configs"][str(id)]
+
+        # ----------------------------------------
+
+        for config_key, config_value in config_dict.items():
+            counter = config_analysis.setdefault(config_key, Counter())
+            counter[config_value] += 1
+
+
+        # ----------------------------------------
 
         config = ConfigSpace.Configuration(af.af.cs, config_dict)
         par10, stat = af.cross_validation(config=config)
@@ -84,14 +95,6 @@ with (open(path_intensifier, "r") as intensifier_file, open(path_runhistory, "r"
                 freq[algo]=frequency
             stat_dict["preselectionFrequency"]=freq
 
-            
-            
         values.append({"config_id": id, "trial_id": incumbent["trial"], "walltime": incumbent["walltime"], "config":config_dict, "source":runhistory["config_origins"][str(id)], "stats":stat_dict})
 
-    json.dump(values, output, indent=4)
-
-
-print(values)
-
-
-#TODO Stats zurückgeben lassen, weitere Infos in Stats einbauen (#Bester Solver, ...), Json exportieren
+    json.dump({"values":values, "analysis" : config_analysis}, output, indent=4)
