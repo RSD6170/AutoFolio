@@ -5,7 +5,7 @@ import numpy as np
 from autofolio.facade.af_csv_facade import AFCsvFacade
 
 #path to data
-scenario_path = "examples/MCC2022_Track1_private"
+scenario_path = "examples/MCC2022_Track1_complete"
 
 # will be created (or overwritten) by AutoFolio
 model_fn = "af_model.pkl"
@@ -16,7 +16,7 @@ af = AFCsvFacade(scenario_path=scenario_path, maximize=False)
 af.fit()
 
 # tune AutoFolio's hyperparameter configuration for 20 iterations
-config = af.tune(runcount_limit=2000)
+config = af.tune(runcount_limit=20)
 
 # evaluate configuration using a 10-fold cross validation
 score, _ = af.cross_validation(config=config)
