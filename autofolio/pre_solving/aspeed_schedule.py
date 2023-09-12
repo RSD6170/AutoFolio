@@ -91,10 +91,10 @@ solved(I)   :- solved(I,_).
         '''
 
         pre_solving = CategoricalHyperparameter(
-            "presolving", choices=[True, False], default_value=True) #TODO evaluate if default better on or off
+            "presolving", choices=[True, False], default_value=False) #TODO evaluate if default better on or off
         cs.add_hyperparameter(pre_solving)
         pre_cutoff = UniformIntegerHyperparameter(
-            "pre:cutoff", lower=5, upper=cutoff, default_value=math.ceil(cutoff * 0.5), log=True)
+            "pre:cutoff", lower=5, upper=cutoff, default_value=math.ceil(cutoff * 0.1), log=True)
         cs.add_hyperparameter(pre_cutoff)
         cond = InCondition(child=pre_cutoff, parent=pre_solving, values=[True])
         cs.add_condition(cond)
