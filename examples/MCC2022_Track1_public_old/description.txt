@@ -43,13 +43,13 @@ feature_steps:
     - ClauseDensity
   Feature-dense:
     provides:
-    - RatioOptionalFeatures
     - ConnectivityDensity
   Feature-core:
     provides:
     - Void
     - Number_CORE
     - Number_Dead
+    - RatioOptionalFeatures
   Feature-valid:
     provides:
     - NumberOfValidConfigurationsLog

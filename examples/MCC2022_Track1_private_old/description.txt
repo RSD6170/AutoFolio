@@ -43,13 +43,13 @@ feature_steps:
     - ClauseDensity
   Feature-dense:
     provides:
-    - RatioOptionalFeatures
     - ConnectivityDensity
   Feature-core:
     provides:
     - Void
     - Number_CORE
     - Number_Dead
+    - RatioOptionalFeatures
   Feature-valid:
     provides:
     - NumberOfValidConfigurationsLog
@@ -383,6 +383,9 @@ metainfo_algorithms:
     configuration: ''
     deterministic: 'true'
   Narsimha-track1v-51fd045537919563586647d/track1_conf1.sh:
+    configuration: ''
+    deterministic: 'true'
+  Narsimha-track1v-51fd045537919d/track1_conf1.sh:
     configuration: ''
     deterministic: 'true'
   Narsimha-track1v-51fd045537919d/track1_conf2.sh:
