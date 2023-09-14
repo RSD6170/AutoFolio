@@ -318,7 +318,9 @@ class AutoFolio(object):
         with open(model_fn, "br") as fp:
             scenario, feature_pre_pipeline, pre_solver, selector, config = pickle.load(
                 fp)
+        return self.predict_instance(feature_vec, scenario, feature_pre_pipeline, pre_solver, selector, config)
 
+    def predict_instance(self, feature_vec: list, scenario, feature_pre_pipeline, pre_solver, selector, config):
         for fpp in feature_pre_pipeline:
             fpp.logger = logging.getLogger("Feature Preprocessing")
         if pre_solver:
@@ -334,6 +336,10 @@ class AutoFolio(object):
                             feature_pre_pipeline=feature_pre_pipeline, pre_solver=pre_solver, selector=selector)
 
         return pred["pseudo_instance"]
+
+    def predict_pre(self, scenario, feature_pre_pipeline, pre_solver, selector, config):
+        return list(pre_solver.predict(scenario=scenario).values())[0]
+
 
     def get_cs(self, scenario: ASlibScenario, autofolio_config: dict = None):
         '''

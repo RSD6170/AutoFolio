@@ -1,4 +1,5 @@
 import logging
+import pickle
 
 import numpy as np
 from ConfigSpace.configuration_space import Configuration
@@ -14,6 +15,7 @@ __version__ = "2.1.0"
 class AFCsvFacade(object):
 
     def __init__(self,
+                 scenario: ASlibScenario = None,
                  perf_fn: str = None,
                  feat_fn: str = None,
                  scenario_path: str = None,
@@ -24,21 +26,25 @@ class AFCsvFacade(object):
                  seed: int = 12345
                  ):
         """ Constructor """
-        self.scenario = ASlibScenario()
-
-        if not scenario_path is None:
-            self.scenario.read_scenario(scenario_path)
+        if scenario is not None:
+            self.scenario = scenario
         else:
-            self.scenario.read_from_csv(perf_fn=perf_fn,
-                                    feat_fn=feat_fn,
-                                    objective=objective,
-                                    runtime_cutoff=runtime_cutoff,
-                                    maximize=maximize,
-                                    cv_fn=cv_fn)
+            self.scenario = ASlibScenario()
+
+            if not scenario_path is None:
+                self.scenario.read_scenario(scenario_path)
+            else:
+                self.scenario.read_from_csv(perf_fn=perf_fn,
+                                        feat_fn=feat_fn,
+                                        objective=objective,
+                                        runtime_cutoff=runtime_cutoff,
+                                        maximize=maximize,
+                                        cv_fn=cv_fn)
         self.seed = seed
 
         self.af = AutoFolio(random_seed=seed)
         self.logger = logging.getLogger("AF Facade")
+        self.unpickeld = None
 
     def fit(self,
             config: Configuration = None,
@@ -53,6 +59,7 @@ class AFCsvFacade(object):
         if save_fn:
             self.af._save_model(save_fn, self.scenario, feature_pre_pipeline, pre_solver, selector, config)
         self.logger.info("AutoFolio model saved to %s" % (save_fn))
+        self.unpickeld = self.scenario, feature_pre_pipeline, pre_solver, selector, config
 
     def tune(self,
              wallclock_limit: int = np.inf,
@@ -73,6 +80,28 @@ class AFCsvFacade(object):
         self.logger.info("AF's final performance %f" % (score))
 
         return -1*score, cv_stat
+
+    @staticmethod
+    def load_model(load_fn: str):
+        with open(load_fn, "br") as fp:
+             scenario, feature_pre_pipeline, pre_solver, selector, config = pickle.load(fp)
+        facade = AFCsvFacade(scenario=scenario)
+        facade.unpickeld = (scenario, feature_pre_pipeline, pre_solver, selector, config)
+        return facade
+
+    def predict_instance(self, vec:list):
+        af = AutoFolio(random_seed=42)  # random seed doesn't matter here
+        if self.unpickeld is None:
+            raise ValueError
+        pre_pred, pred = af.predict_instance(vec, *self.unpickeld)
+        return pre_pred, pred
+
+    def predict_pre(self):
+        af = AutoFolio(random_seed=42)  # random seed doesn't matter here
+        if self.unpickeld is None:
+            raise ValueError
+        pre_pred = af.predict_pre(*self.unpickeld)
+        return pre_pred
 
     #fix by @lteu and @felixvuo
     @staticmethod
