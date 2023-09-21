@@ -16,7 +16,7 @@ def loadModel(message):
 def getPreSchedule(message):
     try:
         pre_sched = facade.predict_pre()
-        answer({"type":"PRE_SCHEDULE", "preSchedule":pre_sched})
+        answer({"type":"PRE_SCHEDULE", "preSchedule":transformTupleList(pre_sched)})
     except ValueError:
         answer(generateError("Model not loaded!"))
 
@@ -24,7 +24,7 @@ def getPreSchedule(message):
 def getPrediction(message):
     try:
         pre_pred, pred = facade.predict_instance(message["featureVector"])
-        answer({"type": "PREDICTION", "preSchedule":pre_pred, "prediction": pred})
+        answer({"type": "PREDICTION", "preSchedule":transformTupleList(pre_pred), "prediction": transformTupleList(pred)})
     except ValueError:
         answer(generateError("Model not loaded!"))
 
@@ -33,21 +33,21 @@ def generateConfig(message):
     time = message["timeLimit"] if message["timeLimit"] is not None else np.inf
     run = message["runLimit"] if message["runLimit"] is not None else np.inf
     config = temp_facade.tune(wallclock_limit=time, runcount_limit=run)
-    answer({"type":"CONFIG", "config":config, "scenarioPath":message["scenarioPath"]})
+    answer({"type":"CONFIG", "config":transformConfig(config), "scenarioPath":message["scenarioPath"]})
 
 def generateModel(message):
     global facade
-    facade = AFCsvFacade(scenario_path=message["scenarioPath"], maximize=message["isMaximize"])
+    facade = AFCsvFacade(scenario_path=message["scenarioPath"], maximize=message["maximize"])
     if message["modelPath"] is not None:
-        facade.fit(config=message["configuration"], save_fn=message["modelPath"])
+        facade.fit(config=getConfig(message["config"]), save_fn=message["modelPath"])
     else:
-        facade.fit(config=message["configuration"])
+        facade.fit(config=getConfig(message["config"]))
     answer({"type":"MODEL", "modelPath":message["modelPath"], "scenarioPath":message["scenarioPath"]})
 
 
 def generateCrossEval(message):
-    _, stat = facade.cross_validation(config=message["configuration"])
-    answer({"type":"CROSS_EVALUATION", "configuration":message["configuration"], "stats":evaluateStat(stat)})
+    _, stat = facade.cross_validation(config=getConfig(message["config"]))
+    answer({"type":"CROSS_EVALUATION", "config":message["config"], "stats":evaluateStat(stat)})
 
 def handleInput(message):
     try:
@@ -84,6 +84,14 @@ def answer(message):
 def generateError(reason):
     return {"type":"ERROR", "reason":reason}
 
+def transformTupleList(tuples):
+    return [{"solver":s, "budget":t} for (s,t) in tuples]
+
+def transformConfig(config):
+    return json.dumps(config)
+
+def getConfig(configString):
+    return json.loads(configString)
 
 def evaluateStat(stat):
     stat_dict = {}

@@ -338,6 +338,8 @@ class AutoFolio(object):
         return pred["pseudo_instance"]
 
     def predict_pre(self, scenario, feature_pre_pipeline, pre_solver, selector, config):
+        if pre_solver is None:
+            return []
         return list(pre_solver.predict(scenario=scenario).values())[0]
 
 
