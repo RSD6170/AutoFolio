@@ -10,6 +10,7 @@ facade: AFCsvFacade
 def loadModel(message):
     global facade
     facade = AFCsvFacade.load_model(message["modelPath"])
+    answer({"type": "MODEL_LOADED", "modelPath":message["modelPath"]})
 
 
 def getPreSchedule(message):
