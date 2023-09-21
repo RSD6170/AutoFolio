@@ -54,7 +54,7 @@ class PairwiseRegression(object):
         n_algos = len(scenario.algorithms)
         X = scenario.feature_data.values
 
-        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
+        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 2) as e:
             fs = {e.submit(self.fit_instance, self.regressor_class, config, X, scenario.performance_data[scenario.algorithms[i]].values, scenario.performance_data[scenario.algorithms[j]].values): (i,j) for i in range(n_algos) for j in range(i+1, n_algos)}
             for f in futures.as_completed(fs):
                 self.regressors[fs[f]] = f.result()
@@ -90,7 +90,7 @@ class PairwiseRegression(object):
         X = scenario.feature_data.values
         scores = np.zeros((X.shape[0], n_algos))
 
-        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
+        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 2) as e:
             fs = {e.submit(self.predict_instance, self.regressors[(i,j)], X): (i,j) for i in range(n_algos) for j in range(i + 1, n_algos)}
             for f in futures.as_completed(fs):
                 i,j = fs[f]

@@ -67,9 +67,9 @@ class PairwiseClassifier(object):
             self.isXGBoost = True
             for i in range(n_algos):
                 for j in range(i + 1, n_algos):
-                    self.classifiers[(i,j)] = self.fit_instance(self.classifier_class, config, X, scenario.performance_data[scenario.algorithms[i]].values, scenario.performance_data[scenario.algorithms[j]].values)
+                    self.classifiers[(i,j)] = self.fit_instance(self.classifier_class, config, X, scenario.performance_data[scenario.algorithms[i]].values, scenario.performance_data[scenario.algorithms[j]].values, len(psutil.Process().cpu_affinity()) -2)
         else:
-            with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
+            with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 2) as e:
                 fs = {e.submit(self.fit_instance, self.classifier_class, config, X, scenario.performance_data[scenario.algorithms[i]].values, scenario.performance_data[scenario.algorithms[j]].values, 1): (i,j) for i in range(n_algos) for j in range(i+1, n_algos)}
                 for f in futures.as_completed(fs):
                     self.classifiers[fs[f]] = f.result()
@@ -114,7 +114,7 @@ class PairwiseClassifier(object):
                     scores[Y == 1, i] += 1
                     scores[Y == 0, j] += 1
         else:
-            with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
+            with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 2) as e:
                 fs = {e.submit(self.predict_instance, self.classifiers[(i,j)], X): (i,j) for i in range(n_algos) for j in range(i + 1, n_algos)}
                 for f in futures.as_completed(fs):
                     i,j = fs[f]

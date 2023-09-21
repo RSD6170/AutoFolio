@@ -199,7 +199,7 @@ solved(I)   :- solved(I,_).
         def modelCall(model):
             self.handleOutput(model, algorithms)
 
-        core_number = len(psutil.Process().cpu_affinity()) - 1 #run with n-1 cores max
+        core_number = len(psutil.Process().cpu_affinity()) - 2 #run with n-2 cores max
         ctl = Control(arguments=["-t %d"%core_number])
         enable_python()
         #TODO limit runtimee

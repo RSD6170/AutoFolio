@@ -56,7 +56,7 @@ class IndRegression(object):
 
         regressor_tmp = [None] * n_algos
 
-        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
+        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 2) as e:
             fs = {e.submit(self.fit_instance, self.regressor_class, config, X, scenario.performance_data[scenario.algorithms[i]].values): i for i in range(n_algos)}
             for f in futures.as_completed(fs):
                 regressor_tmp[fs[f]] = f.result()
@@ -92,7 +92,7 @@ class IndRegression(object):
         X = scenario.feature_data.values
         scores = np.zeros((X.shape[0], n_algos))
 
-        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 1) as e:
+        with futures.ProcessPoolExecutor(max_workers=len(psutil.Process().cpu_affinity()) - 2) as e:
             fs = {e.submit(self.predict_instance, self.regressors[i], X): i for i in range(n_algos)}
             for f in futures.as_completed(fs):
                 scores[:, fs[f]] += f.result()
