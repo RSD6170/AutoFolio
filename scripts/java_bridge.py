@@ -12,6 +12,16 @@ def loadModel(message):
     facade = AFCsvFacade.load_model(message["modelPath"])
     answer({"type": "MODEL_LOADED", "modelPath":message["modelPath"]})
 
+def getFeatureGroups(message):
+    try:
+        scenario, _, _, _, config = facade.unpickeld
+        cutoff = scenario.features_cutoff_time
+
+        fgroups = [a for (a,b) in config if a.startswith("fgroup_") and b]
+
+        answer({"type":"FEATURE_GROUPS", "cutoff":cutoff, "fgroups":fgroups})
+    except ValueError:
+        answer(generateError("Model not loaded!"))
 
 def getPreSchedule(message):
     try:
@@ -54,6 +64,8 @@ def handleInput(message):
         match message["type"]:
             case "LOAD_MODEL":
                 loadModel(message)
+            case "GET_FEATURE_GROUPS":
+                getFeatureGroups(message)
             case "GET_PRE_SCHEDULE":
                 getPreSchedule(message)
             case "GET_PREDICTION":
