@@ -33,7 +33,7 @@ def getPreSchedule(message):
 
 def getPrediction(message):
     try:
-        pre_pred, pred = facade.predict_instance(message["featureVector"])
+        pre_pred, pred = facade.predict_instance(handleFeatureVector(message["featureVector"]))
         answer({"type": "PREDICTION", "preSchedule":transformTupleList(pre_pred), "prediction": transformTupleList(pred)})
     except ValueError:
         answer(generateError("Model not loaded!"))
@@ -104,6 +104,15 @@ def transformConfig(config):
 
 def getConfig(configString):
     return json.loads(configString)
+
+def handleFeatureVector(messagePart):
+    return [getFloatOrNull(x) for x in messagePart.split(",")]
+
+def getFloatOrNull(string):
+    try:
+        return float(string)
+    except ValueError:
+        return None
 
 def evaluateStat(stat):
     stat_dict = {}
