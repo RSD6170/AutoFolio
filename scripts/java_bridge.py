@@ -17,7 +17,7 @@ def getFeatureGroups(message):
         scenario, _, _, _, config = facade.unpickeld
         cutoff = scenario.features_cutoff_time
 
-        fgroups = [a for (a,b) in config if a.startswith("fgroup_") and b]
+        fgroups = [a for (a,b) in config.items() if a.startswith("fgroup_") and b]
 
         answer({"type":"FEATURE_GROUPS", "cutoff":cutoff, "fgroups":fgroups})
     except ValueError:
