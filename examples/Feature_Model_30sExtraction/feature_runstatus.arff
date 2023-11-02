@@ -1,0 +1,75 @@
+@RELATION FEATURES_RUNSTATUS
+
+@ATTRIBUTE instance_id STRING
+@ATTRIBUTE repetition NUMERIC
+@ATTRIBUTE Feature-basic {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Feature-constraints {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Feature-tree {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Feature-clause {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Feature-dense {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Feature-core {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Feature-valid {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Feature-cyclo {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-BASE {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-SP {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-DIA {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-CL {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-UNIT {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-LS {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-LOBJOIS {ok, timeout, memout, not_applicable, crash, other}
+@ATTRIBUTE Satzilla-LP {ok, timeout, memout, not_applicable, crash, other}
+
+@DATA
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/automotive01/automotive01.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/automotive02/automotive2_4.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/CDL/am31_sim.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/CDL/ea2468.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/CDL/p2106.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/featureide_examples/berkeleydb.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/financial_services/financialServices_2018-05-09.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/KConfig/axTLS.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/KConfig/busybox-1.18.0.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/KConfig/embtoolkit.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/KConfig/linux-2.6.33.3.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,timeout,timeout,timeout,timeout,timeout,timeout,timeout,timeout
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/KConfig/uClibc.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/KConfig/uClinux-base.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/KConfig/uClinux-distribution.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/2.6.28.6-icse11.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,timeout,timeout,timeout,timeout,timeout,timeout,timeout,timeout
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/2.6.32-2var.dimacs,1,ok,ok,ok,ok,timeout,timeout,ok,timeout,ok,ok,ok,ok,ok,ok,ok,timeout
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/2.6.33.3-2var.dimacs,1,ok,ok,ok,ok,timeout,timeout,ok,timeout,timeout,ok,ok,ok,ok,ok,ok,timeout
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/7z.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/adderII.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/at91sam7sek.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/axTLS.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/axtls_2_1_4.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/BerkeleyDBC.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/buildroot.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,ok,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/busybox-1.18.0.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/busybox_1_28_0.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/Dune.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/ecos-icse11.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/embtoolkit.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,timeout,timeout,timeout,timeout,timeout,timeout,timeout,timeout
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/fiasco.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/fiasco_17_10.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/freebsd-icse11.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,timeout,timeout,timeout,timeout,timeout,timeout,timeout,timeout
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/freetz.dimacs,1,ok,ok,ok,ok,ok,ok,ok,timeout,timeout,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/HiPAcc.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/integrator_arm9.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/JavaGC.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/JHipster.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/LLVM.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/lrzip.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/m5272c3.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/olpce2294.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/pati.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/phycore229x.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/Polly.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/ref4955.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/se77x9.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/toybox.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/toybox_0_7_5.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/uClibc-ng_1_0_29.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/uClinux-config.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/uClinux.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/VP9.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
+/home/ubuntu/java/exploiting-ddnnfs-eval/cnf/Smarch/X264.dimacs,1,ok,ok,ok,ok,ok,ok,ok,ok,ok,crash,ok,ok,crash,timeout,ok,ok
