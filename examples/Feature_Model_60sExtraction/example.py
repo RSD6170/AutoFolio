@@ -5,7 +5,7 @@ import numpy as np
 from autofolio.facade.af_csv_facade import AFCsvFacade
 
 #path to data
-scenario_path = "examples/test_sharpSAT"
+scenario_path = "examples/Feature_Model_60sExtraction"
 
 # will be created (or overwritten) by AutoFolio
 model_fn = "af_model.pkl"
