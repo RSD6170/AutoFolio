@@ -421,9 +421,6 @@ metainfo_algorithms:
   gpmc_r2/track1:
     configuration: ''
     deterministic: 'true'
-  mtmc/default:
-    configuration: ''
-    deterministic: 'true'
 number_of_feature_steps: 1
 performance_measures:
 - runtime
