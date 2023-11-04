@@ -8,7 +8,7 @@ from autofolio.facade.af_csv_facade import AFCsvFacade
 scenario_path = "examples/MCC2022_T1_randomSplits/Training_4"
 
 # will be created (or overwritten) by AutoFolio
-model_fn = "af_model.pkl"
+model_fn = "mcc2022_T1_F4.pkl"
 
 af = AFCsvFacade(scenario_path=scenario_path, maximize=False)
 
@@ -23,5 +23,5 @@ score, _ = af.cross_validation(config=config)
 
 # # re-fit AutoFolio using the (hopefully) better configuration
 # # and save model to disk
-# af.fit(config=config, save_fn=model_fn)
+af.fit(config=config, save_fn=model_fn)
 
