@@ -64,8 +64,8 @@ class ImputerWrapper(object):
         '''
         self.logger.debug("Impute Missing Feature Values")
 
-        values = self.imputer.transform(
-            np.array(scenario.feature_data.values))
+        org_array = np.array(scenario.feature_data.values, dtype=float)
+        values = self.imputer.transform(org_array)
         scenario.feature_data = pd.DataFrame(
             data=values, index=scenario.feature_data.index, columns=scenario.feature_data.columns)
 
