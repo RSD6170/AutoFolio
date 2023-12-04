@@ -24,8 +24,11 @@ def get_solved_instances(df, columns):
         ret_value[c] =  df[(df[c]<3600)].filter(items = ["instance", c])
     return ret_value
 
-def get_unsolved_instances(df, columns):
-    ret_value = {}
+def get_conter_instances(df_a, df_b):
+    return df_a[~df_a.instance.isin(df_b.instance)]
+
+def get_solved_instances_multi(df, columns):
     for c in columns:
-        ret_value[c] =  df[(df[c]>=3600)].filter(items = ["instance", c])
-    return ret_value
+        df =  df[(df[c]<3600)]
+    return df
+
