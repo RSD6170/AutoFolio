@@ -1,12 +1,12 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from csv_reader import read_CSV
+import csv_reader
 
 columns = ["instance", "as4mocoRun", "sbsRun", "oracleRun"]
 iterations = 500
 
-df = read_CSV(iterations, columns)
+df = csv_reader.read_CSV(iterations, columns)
 df = df.assign(instance = lambda x: x['instance'].str.extract('mc2022_track1_(\d+).dimacs'))
 df["instance"] = df["instance"].astype(int)
 #df.set_index("instance", inplace=True)

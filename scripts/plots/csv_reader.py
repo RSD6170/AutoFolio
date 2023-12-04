@@ -17,3 +17,15 @@ def read_CSV(iterations, columns):
 
 def get_path(path, iterations, fold ):
     return path + "/data/fold_runs/MCC22_T1_splits_{its}I/MCC2022_T1_F{fold}_{its}I/results.csv".format(its=iterations, fold=fold)
+
+def get_solved_instances(df, columns):
+    ret_value = {}
+    for c in columns:
+        ret_value[c] =  df[(df[c]<3600)].filter(items = ["instance", c])
+    return ret_value
+
+def get_unsolved_instances(df, columns):
+    ret_value = {}
+    for c in columns:
+        ret_value[c] =  df[(df[c]>=3600)].filter(items = ["instance", c])
+    return ret_value
