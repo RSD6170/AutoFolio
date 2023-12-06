@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import csv_reader
+from scripts.plots import csv_reader
 
 columns = ["instance", "as4mocoRun", "sbsRun", "oracleRun", "sbs-oracle","sbs-as4moco","as4moco-oracle"]
 iterations = 500
