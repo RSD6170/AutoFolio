@@ -25,7 +25,7 @@ fig, axd = plt.subplot_mosaic([['left', 'right'],['bottom', 'bottom']],
 
 
 for i, name, df in dfs:
-     fig.add_subplot(axd[i]).scatter(df["Iterations"],df["Score"],label=name, marker='x')
+     fig.add_subplot(axd[i]).plot(df["Iterations"],df["Score"],label=name, marker='x')
 
 for a in fig.get_axes():
     a.legend()
