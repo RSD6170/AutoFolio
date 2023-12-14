@@ -7,7 +7,7 @@ from scripts.plots import csv_reader
 import matplotlib.patches as mpatches
 
 columns = ["instance", "as4mocoRun", "sbsRun", "oracleRun"]
-iterations = 6000
+iterations = 4000
 
 df = csv_reader.read_CSV(iterations, columns)
 df = df.assign(instance = lambda x: x['instance'].str.extract('mc2022_track1_(\d+).dimacs'))
@@ -26,7 +26,7 @@ print(median)
 
 ax = plt.gca()
 plt.bar(df["instance"], df["plot"], color=df["color"], bottom=1, log=True)
-ax.axhline(1, color='b')
+ax.axhline(1, color='black')
 ax.axhline(mean, color='b', ls='--', label="Mean")
 ax.axhline(median, color='b', label="Median")
 

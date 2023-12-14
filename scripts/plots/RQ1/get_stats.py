@@ -3,7 +3,7 @@ import numpy as np
 from scripts.plots import csv_reader
 
 columns = ["instance", "as4mocoRun", "sbsRun", "oracleRun", "sbs-oracle","sbs-as4moco","as4moco-oracle"]
-iterations = 500
+iterations = 4000
 
 df = csv_reader.read_CSV(iterations, columns)
 
@@ -20,6 +20,10 @@ print("Same solver:")
 print(df["sbs-oracle"].value_counts())
 print(df["sbs-as4moco"].value_counts())
 print(df["as4moco-oracle"].value_counts())
+
+print("")
+print(df[df["as4mocoRun"]<df["oracleRun"]].shape[0])
+print(df[df["as4mocoRun"]<df["sbsRun"]].shape[0])
 
 print("")
 print(csv_reader.get_conter_instances(df, solved["as4mocoRun"]))
