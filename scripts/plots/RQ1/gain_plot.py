@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scripts.plots import csv_reader
+import matplotlib.patches as mpatches
 
 columns = ["instance", "as4mocoRun", "sbsRun", "oracleRun"]
 iterations = 6000
@@ -26,10 +27,19 @@ print(median)
 ax = plt.gca()
 plt.bar(df["instance"], df["plot"], color=df["color"], bottom=1, log=True)
 ax.axhline(1, color='b')
-ax.axhline(mean, color='b', ls='--')
-ax.axhline(median, color='b')
+ax.axhline(mean, color='b', ls='--', label="Mean")
+ax.axhline(median, color='b', label="Median")
 
 
 plt.ylabel("Score -- as4moco / SBS")
 plt.xlabel("Identifier of input instance")
+
+handles, labels = ax.get_legend_handles_labels()
+better = mpatches.Patch(color='g', label='Better')
+worse = mpatches.Patch(color='r', label='Worse')
+
+handles.append(better)
+handles.append(worse)
+
+plt.legend(handles=handles)
 plt.show()

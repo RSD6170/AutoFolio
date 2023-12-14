@@ -29,7 +29,7 @@ for i, name, df in dfs:
 
 for a in fig.get_axes():
     a.legend()
-    a.set_ylabel("Cross-Evaluation Score")
+    a.set_ylabel("Cross-Validation Score")
     a.set_xlabel("SMAC training time [h]")
     #a.set_xscale("log")
 
