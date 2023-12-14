@@ -34,6 +34,7 @@ ax.axhline(median, color='b', label="Median")
 plt.ylabel("Score -- as4moco / SBS")
 plt.xlabel("Identifier of input instance")
 
+# https://stackoverflow.com/a/56551701
 handles, labels = ax.get_legend_handles_labels()
 better = mpatches.Patch(color='g', label='Better')
 worse = mpatches.Patch(color='r', label='Worse')
