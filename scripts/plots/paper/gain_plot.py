@@ -6,9 +6,15 @@ import matplotlib.pyplot as plt
 from scripts.plots import csv_reader
 import matplotlib.patches as mpatches
 
+colors = [["orangered","darkred"],["lime","seagreen"]]
+
 def colorer(row):
     if row.as4mocoRun == 3600 or row.oracleRun == 3600: return "k"
-    return "r" if row.gain >= 1 else "g"
+    fst = 1
+    if row.gain >= 1: fst = 0
+    snd = 1
+    if row.as4moco_Pipeline == "PER_SET" : snd = 0
+    return colors[fst][snd]
 
 columns = ["instance", "as4mocoRun", "sbsRun", "oracleRun"]
 iterations = 8000
@@ -24,12 +30,16 @@ mean = 10 ** mean_log
 median = df["gain"].median()
 df["color"] = df.apply(colorer, axis=1)
 df["plot"] = df.apply(lambda row: row.gain - 1, axis=1)
-
 print(mean)
 print(median)
 
+df_black = df[df["color"] == "k"]
+df_whole = df[df["color"] != "k"]
+
+
 ax = plt.gca()
-plt.bar(df["instance"], df["plot"], color=df["color"], bottom=1, log=True)
+plt.bar(df_whole["instance"], df_whole["plot"], color=df_whole["color"], bottom=1, log=True )
+bar = plt.bar(df_black["instance"], df_black["plot"], color=df_black["color"], bottom=1, log=True)
 ax.axhline(1, color='black')
 ax.axhline(mean, color='b', ls='--', label="Mean")
 ax.axhline(median, color='b', label="Median")
@@ -40,13 +50,12 @@ plt.xlabel("Identifier of input instance")
 
 # https://stackoverflow.com/a/56551701
 handles, labels = ax.get_legend_handles_labels()
-better = mpatches.Patch(color='g', label='Better')
-worse = mpatches.Patch(color='r', label='Worse')
-timeout = mpatches.Patch(color='k', label='Timeout')
+handles.append( mpatches.Patch(color=colors[1][0], label='Better - Per-Set'))
+handles.append( mpatches.Patch(color=colors[1][1], label='Better - Per-Instance'))
+handles.append( mpatches.Patch(color=colors[0][0], label='Worse - Per-Set'))
+handles.append( mpatches.Patch(color=colors[0][1], label='Worse - Per-Instance'))
+handles.append( mpatches.Patch(color='k', label='Timeout'))
 
-handles.append(better)
-handles.append(worse)
-handles.append(timeout)
 
 plt.legend(handles=handles)
 
