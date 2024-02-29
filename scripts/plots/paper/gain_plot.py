@@ -6,10 +6,11 @@ import matplotlib.pyplot as plt
 from scripts.plots import csv_reader
 import matplotlib.patches as mpatches
 
-colors = [["orangered","darkred"],["lime","seagreen"]]
+colors = [["lightsalmon","darkred"],["lime","seagreen"]]
+timeout_color = "gold"
 
 def colorer(row):
-    if row.as4mocoRun == 3600 or row.oracleRun == 3600: return "k"
+    if row.as4mocoRun == 3600 or row.oracleRun == 3600: return timeout_color
     fst = 1
     if row.gain >= 1: fst = 0
     snd = 1
@@ -33,8 +34,8 @@ df["plot"] = df.apply(lambda row: row.gain - 1, axis=1)
 print(mean)
 print(median)
 
-df_black = df[df["color"] == "k"]
-df_whole = df[df["color"] != "k"]
+df_black = df[df["color"] == timeout_color]
+df_whole = df[df["color"] != timeout_color]
 
 
 ax = plt.gca()
@@ -54,11 +55,13 @@ handles.append( mpatches.Patch(color=colors[1][0], label='Better - Per-Set'))
 handles.append( mpatches.Patch(color=colors[1][1], label='Better - Per-Instance'))
 handles.append( mpatches.Patch(color=colors[0][0], label='Worse - Per-Set'))
 handles.append( mpatches.Patch(color=colors[0][1], label='Worse - Per-Instance'))
-handles.append( mpatches.Patch(color='k', label='Timeout'))
+handles.append( mpatches.Patch(color=timeout_color, label='Timeout'))
 
 
 plt.legend(handles=handles)
 
 plt.gca().yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
 
-plt.show()
+#plt.show()
+plt.tight_layout()
+plt.savefig('../../gain_plot_{its}I.pdf'.format(its=iterations))

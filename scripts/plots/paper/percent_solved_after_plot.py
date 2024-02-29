@@ -47,4 +47,6 @@ ax.set_xlim([min_val, cutoff])
 ax.set_ylim([0, 100])
 ax.legend()
 
-plt.show()
+#plt.show()
+plt.tight_layout()
+plt.savefig('../../runtimeCDF_plot_{its}I.pdf'.format(its=iterations))

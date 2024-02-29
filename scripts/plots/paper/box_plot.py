@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 from scripts.plots import csv_reader
 
-iterations = 4000
+iterations = 8000
 solvedFrom = []
 invert= False
 
@@ -43,4 +43,6 @@ plt.gca().xaxis.grid(True, linestyle='-', which='major', color='lightgrey', alph
 
 plt.xlabel("Runtime [s]")
 
-plt.show()
+#plt.show()
+plt.tight_layout()
+plt.savefig('../../box_plot_{its}I.pdf'.format(its=iterations))

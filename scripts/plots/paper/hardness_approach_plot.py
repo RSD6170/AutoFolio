@@ -32,4 +32,7 @@ ax.set_xlabel("Mean Solver Runtime on Instance [s] (logarithmic)")
 ax.set_xscale("log")
 ax.set_yscale("log")
 ax.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
-plt.show()
+
+#plt.show()
+plt.tight_layout()
+plt.savefig('../../hardness_plot_{its}I.pdf'.format(its=iterations))

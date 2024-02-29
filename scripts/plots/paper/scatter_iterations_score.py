@@ -39,4 +39,7 @@ a.set_xlabel("SMAC Iterations")
 a.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
 a.set_ylim(bottom=0)
 
-plt.show()
+#plt.show()
+plt.tight_layout()
+plt.savefig('../../iterationsToScore_plot.pdf')
+
