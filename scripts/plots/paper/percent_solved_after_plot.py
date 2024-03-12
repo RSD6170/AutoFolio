@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scripts.plots import csv_reader
+import matplotlib.style as style
+style.use('tableau-colorblind10')
 
 # from https://github.com/mlindauer/asapy/blob/master/asapy/utils/util_funcs.py
 def get_cdf_x_y(data, cutoff):
@@ -23,9 +25,7 @@ df = csv_reader.read_CSV(iterations)
 
 ax = plt.gca()
 
-from cycler import cycler
-colormap = plt.get_cmap("gist_ncar")
-ax.set_prop_cycle(cycler('color', [colormap(i) for i in np.linspace(0, 0.9, 3)]))
+
 
 cols = [ ("as4mocoRun", "as4moco"), ("sbsRun", "SBS"), ("oracleRun", "Oracle")]
 col2 = [ "as4mocoRun","sbsRun","oracleRun"]

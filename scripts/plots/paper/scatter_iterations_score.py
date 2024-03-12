@@ -3,6 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scripts.plots import csv_reader
 
+import matplotlib.style as style
+style.use('tableau-colorblind10')
 
 
 

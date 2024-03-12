@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 from scripts.plots import csv_reader
 import matplotlib.patches as mpatches
 
+import matplotlib.style as style
+style.use('tableau-colorblind10')
+
 colors = [["lightsalmon","darkred"],["lime","seagreen"]]
 timeout_color = "gold"
 
