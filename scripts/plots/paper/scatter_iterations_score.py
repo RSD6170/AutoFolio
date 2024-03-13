@@ -30,6 +30,16 @@ for iteration in iterations:
     scores.append({"iteration": iteration, "fold": "MCC22 T1 complete", "score": score})
 
 df = pd.DataFrame(scores)
+
+test = df[df['fold'] != "MCC2022 T1 complete"].groupby('iteration')
+print("mean:")
+print(test.mean(numeric_only=True))
+print("std:")
+print(test.std(numeric_only=True))
+print("var:")
+print(test.var(numeric_only=True))
+
+
 for name, groups in df.groupby('fold'):
     plt.plot(groups['iteration'], groups['score'], marker='x', label=name)
 

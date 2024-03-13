@@ -38,7 +38,7 @@ df_i = df[df["as4moco_Pipeline"]=="PER_INSTANCE"]
 
 plt.scatter(df_s['instance_hardness'], df_s['as4mocoRun'], marker='x', color=df_s['color'], zorder=3, label="Per-Set Pipeline")
 plt.scatter(df_i['instance_hardness'], df_i['as4mocoRun'], marker='+', color=df_i['color'], zorder=3, label="Per-Instance Pipeline")
-plt.plot()
+
 
 
 
