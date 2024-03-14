@@ -4,7 +4,22 @@ import matplotlib.pyplot as plt
 
 from scripts.plots import csv_reader
 
-iterations = 8000
+def get_box_plot_data(labels, bp):
+    rows_list = []
+
+    for i in range(len(labels)):
+        dict1 = {}
+        dict1['label'] = labels[i]
+        dict1['lower_whisker'] = bp['whiskers'][i*2].get_xdata()[1]
+        dict1['lower_quartile'] = bp['boxes'][i].get_xdata()[1]
+        dict1['median'] = bp['medians'][i].get_xdata()[1]
+        dict1['upper_quartile'] = bp['boxes'][i].get_xdata()[2]
+        dict1['upper_whisker'] = bp['whiskers'][(i*2)+1].get_xdata()[1]
+        rows_list.append(dict1)
+
+    return pd.DataFrame(rows_list)
+
+iterations = 2000
 solvedFrom = []
 invert= False
 
@@ -37,6 +52,8 @@ print("caps")
 for line in test['caps']:
     x, y = line.get_xydata()[1]
     print(x, y)
+
+print(get_box_plot_data(["as4moco", "SBS", "Oracle"], test).to_string())
 
 plt.legend([test['medians'][0], test['means'][0]], ['Median', 'Mean'])
 plt.gca().xaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)

@@ -21,7 +21,7 @@ def colorer(row):
     return colors[fst][snd]
 
 columns = ["instance", "as4mocoRun", "sbsRun", "oracleRun"]
-iterations = 8000
+iterations = 2000
 
 df = csv_reader.read_CSV(iterations)
 df = df.assign(instance = lambda x: x['instance'].str.extract('mc2022_track1_(\d+).dimacs'))

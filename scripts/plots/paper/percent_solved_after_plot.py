@@ -18,7 +18,7 @@ def get_cdf_x_y(data, cutoff):
     return b_x, b_y
 
 
-iterations = 8000
+iterations = 2000
 cutoff = 3600
 
 df = csv_reader.read_CSV(iterations)

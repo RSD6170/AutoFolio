@@ -23,7 +23,7 @@ def add_identity(axes, *line_args, **line_kwargs):
     axes.callbacks.connect('ylim_changed', callback)
     return axes
 
-iterations = 8000
+iterations = 2000
 cutoff = 3600
 
 df = csv_reader.read_CSV(iterations)
