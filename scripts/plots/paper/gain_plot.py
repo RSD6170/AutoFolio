@@ -13,7 +13,7 @@ colors = [["lightsalmon","darkred"],["lime","seagreen"]]
 timeout_color = "gold"
 
 def colorer(row):
-    if row.as4mocoRun == 3600 or row.oracleRun == 3600: return timeout_color
+    if row.as4mocoRun == 3600 or row.sbsRun == 3600: return timeout_color
     fst = 1
     if row.gain >= 1: fst = 0
     snd = 1
