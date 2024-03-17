@@ -29,6 +29,7 @@ df = csv_reader.get_solved_instances_multi(df_init, solvedFrom)
 if invert:
     df = csv_reader.get_conter_instances(df_init, df)
 
+timeout = plt.axvline(3600, color="red", label="Timeout")
 
 test = plt.boxplot(df[["as4mocoRun", "sbsRun", "oracleRun"]], labels=["as4moco", "SBS", "Oracle"], meanline=True, vert=False, showmeans=True)
 #plt.set_title("Split "+str(i))
@@ -55,7 +56,9 @@ for line in test['caps']:
 
 print(get_box_plot_data(["as4moco", "SBS", "Oracle"], test).to_string())
 
-plt.legend([test['medians'][0], test['means'][0]], ['Median', 'Mean'])
+
+
+plt.legend([test['medians'][0], test['means'][0], timeout], ['Median', 'Mean', 'Timeout'])
 plt.gca().xaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
 
 plt.xlabel("Runtime [s]")

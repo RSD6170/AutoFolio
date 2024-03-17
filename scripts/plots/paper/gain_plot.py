@@ -45,8 +45,8 @@ ax = plt.gca()
 plt.bar(df_whole["instance"], df_whole["plot"], color=df_whole["color"], bottom=1, log=True )
 bar = plt.bar(df_black["instance"], df_black["plot"], color=df_black["color"], bottom=1, log=True)
 ax.axhline(1, color='black')
-ax.axhline(mean, color='b', ls='--', label="Mean")
-ax.axhline(median, color='b', label="Median")
+#ax.axhline(mean, color='b', ls='--', label="Mean")
+#ax.axhline(median, color='b', label="Median")
 
 
 plt.ylabel("Score -- as4moco / SBS")
