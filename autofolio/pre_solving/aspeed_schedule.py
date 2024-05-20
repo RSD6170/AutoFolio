@@ -155,7 +155,9 @@ solved(I)   :- solved(I,_).
         if config["presolving"]:
             self.logger.info("Compute Presolving Schedule with Aspeed")
 
-            X = scenario.performance_data.values
+            temp = scenario.performance_data.drop(columns=["ExactMC/ExactMC_BE.sh"]) # remove ExactMC_BE because of errors in short runs
+
+            X = temp.values
 
             # if the instance set is too large, we subsample it
             if X.shape[0] > self.data_threshold:
@@ -174,7 +176,7 @@ solved(I)   :- solved(I,_).
             data_in = " ".join(times) + " " + kappa
 
             # call aspeed and save schedule
-            self._call_clingo(data_in=data_in, algorithms=scenario.performance_data.columns)
+            self._call_clingo(data_in=data_in, algorithms=temp.columns)
 
     def handleOutput(self, model : Model, algorithms : list):
         schedule_dict = {}
