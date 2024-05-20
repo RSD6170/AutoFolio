@@ -165,6 +165,7 @@ class XGBoost:
             -------
 
         '''
+        self.model.set_params(n_jobs=len(psutil.Process().cpu_affinity()) - 1)
         preds = np.array(self.model.predict(X))
         preds[preds < 0.5] = 0
         preds[preds >= 0.5] = 1

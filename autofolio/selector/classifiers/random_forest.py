@@ -125,7 +125,7 @@ class RandomForest:
             -------
 
         '''
-
+        self.model.set_params(n_jobs=len(psutil.Process().cpu_affinity()) - 1)
         return self.model.predict(X)
 
     def get_attributes(self):
