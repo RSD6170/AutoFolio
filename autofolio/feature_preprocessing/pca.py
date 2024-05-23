@@ -2,9 +2,7 @@ import logging
 
 import numpy as np
 import pandas as pd
-from ConfigSpace import CategoricalHyperparameter, Integer, Uniform \
- \
-    UniformIntegerHyperparameter
+from ConfigSpace import CategoricalHyperparameter, Integer, Uniform
 from ConfigSpace import Configuration
 from ConfigSpace import ConfigurationSpace
 from ConfigSpace import InCondition
